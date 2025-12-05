@@ -1,9 +1,8 @@
 add_executable(IVisEngine
-    Private/main.cpp
+        main.cpp
 )
 
-target_link_libraries(IVisEngine
-    PRIVATE
+target_link_libraries(IVisEngine PRIVATE
         IVisEngineRuntime
 )
 

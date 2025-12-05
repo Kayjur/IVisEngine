@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "EngineInfo.h"
+#include "../../Core/Public/EngineInfo.h"
 #include <sstream>
 
 using ivis::core::EngineName;

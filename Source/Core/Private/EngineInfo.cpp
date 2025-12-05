@@ -1,4 +1,4 @@
-#include "EngineInfo.h"
+#include "../Public/EngineInfo.h"
 
 namespace ivis::core {
 std::string EngineName() {

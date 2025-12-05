@@ -1,5 +1,5 @@
 #include "Engine.h"
-#include "EngineInfo.h"
+#include "../../Core/Public/EngineInfo.h"
 #include "Renderer.h"
 #include <sstream>
 
