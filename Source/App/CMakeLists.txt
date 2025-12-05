@@ -3,10 +3,10 @@ add_executable(IVisEngine
 )
 
 target_link_libraries(IVisEngine PRIVATE
-        IVisEngineRuntime
+        IVisFramework
 )
 
 target_include_directories(IVisEngine
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../Engine/Public
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Framework/Public
 )

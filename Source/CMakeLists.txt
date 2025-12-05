@@ -1,4 +1,5 @@
 add_subdirectory(Core)
 add_subdirectory(Renderer)
-add_subdirectory(Engine)
+add_subdirectory(Framework)
 add_subdirectory(App)
+add_subdirectory(Test)
