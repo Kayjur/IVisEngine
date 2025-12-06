@@ -45,6 +45,17 @@ public:
     }
 
     /**
+     * 从其他类型的TSharedPtr构造（支持向上类型转换）
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    TWeakPtr(const TSharedPtr<U>& SharedPtr,
+             typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value>::type* = nullptr)
+        : Ptr(SharedPtr.GetSharedPtr())
+    {
+    }
+
+    /**
      * 从std::shared_ptr构造
      */
     explicit TWeakPtr(const std::shared_ptr<T>& SharedPtr)
@@ -63,6 +74,28 @@ public:
     TWeakPtr(TWeakPtr&& Other) noexcept = default;
 
     /**
+     * 从其他类型的TWeakPtr构造（支持向上类型转换）
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    TWeakPtr(const TWeakPtr<U>& Other,
+             typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value>::type* = nullptr)
+        : Ptr(Other.GetWeakPtr())
+    {
+    }
+
+    /**
+     * 从其他类型的TWeakPtr移动构造（支持向上类型转换）
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    TWeakPtr(TWeakPtr<U>&& Other,
+             typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value>::type* = nullptr)
+        : Ptr(std::move(Other.GetWeakPtr()))
+    {
+    }
+
+    /**
      * 拷贝赋值
      */
     TWeakPtr& operator=(const TWeakPtr& Other) = default;
@@ -78,6 +111,42 @@ public:
     TWeakPtr& operator=(const TSharedPtr<T>& SharedPtr)
     {
         Ptr = SharedPtr.GetSharedPtr();
+        return *this;
+    }
+
+    /**
+     * 从其他类型的TSharedPtr赋值（支持向上类型转换）
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value, TWeakPtr&>::type
+    operator=(const TSharedPtr<U>& SharedPtr)
+    {
+        Ptr = SharedPtr.GetSharedPtr();
+        return *this;
+    }
+
+    /**
+     * 从其他类型的TWeakPtr赋值（支持向上类型转换）
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value, TWeakPtr&>::type
+    operator=(const TWeakPtr<U>& Other)
+    {
+        Ptr = Other.GetWeakPtr();
+        return *this;
+    }
+
+    /**
+     * 从其他类型的TWeakPtr移动赋值（支持向上类型转换）
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value, TWeakPtr&>::type
+    operator=(TWeakPtr<U>&& Other)
+    {
+        Ptr = std::move(Other.GetWeakPtr());
         return *this;
     }
 

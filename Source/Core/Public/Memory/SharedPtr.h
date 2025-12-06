@@ -52,6 +52,29 @@ public:
     TSharedPtr(TSharedPtr&& Other) noexcept = default;
 
     /**
+     * 从其他类型的TSharedPtr构造（支持向上类型转换）
+     * 允许从派生类智能指针隐式转换为基类智能指针
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    TSharedPtr(const TSharedPtr<U>& Other,
+               typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value>::type* = nullptr)
+        : Ptr(Other.GetSharedPtr())
+    {
+    }
+
+    /**
+     * 从其他类型的TSharedPtr移动构造（支持向上类型转换）
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    TSharedPtr(TSharedPtr<U>&& Other,
+               typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value>::type* = nullptr)
+        : Ptr(std::move(Other.GetSharedPtr()))
+    {
+    }
+
+    /**
      * 拷贝赋值
      */
     TSharedPtr& operator=(const TSharedPtr& Other) = default;
@@ -60,6 +83,30 @@ public:
      * 移动赋值
      */
     TSharedPtr& operator=(TSharedPtr&& Other) noexcept = default;
+
+    /**
+     * 从其他类型的TSharedPtr赋值（支持向上类型转换）
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value, TSharedPtr&>::type
+    operator=(const TSharedPtr<U>& Other)
+    {
+        Ptr = Other.GetSharedPtr();
+        return *this;
+    }
+
+    /**
+     * 从其他类型的TSharedPtr移动赋值（支持向上类型转换）
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value, TSharedPtr&>::type
+    operator=(TSharedPtr<U>&& Other)
+    {
+        Ptr = std::move(Other.GetSharedPtr());
+        return *this;
+    }
 
     /**
      * 从std::shared_ptr赋值

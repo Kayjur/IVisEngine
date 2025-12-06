@@ -52,6 +52,18 @@ public:
     TUniquePtr(TUniquePtr&& Other) noexcept = default;
 
     /**
+     * 从其他类型的TUniquePtr移动构造（支持向上类型转换）
+     * 允许从派生类智能指针隐式转换为基类智能指针
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    TUniquePtr(TUniquePtr<U>&& Other,
+               typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value>::type* = nullptr)
+        : Ptr(std::move(Other.GetUniquePtr()))
+    {
+    }
+
+    /**
      * 拷贝赋值（删除，unique_ptr不可拷贝）
      */
     TUniquePtr& operator=(const TUniquePtr&) = delete;
@@ -60,6 +72,18 @@ public:
      * 移动赋值
      */
     TUniquePtr& operator=(TUniquePtr&& Other) noexcept = default;
+
+    /**
+     * 从其他类型的TUniquePtr移动赋值（支持向上类型转换）
+     * @tparam U 源类型，必须是T的派生类或可转换为T，且不等于T
+     */
+    template<typename U>
+    typename std::enable_if<std::is_convertible<U*, T*>::value && !std::is_same<U, T>::value, TUniquePtr&>::type
+    operator=(TUniquePtr<U>&& Other)
+    {
+        Ptr = std::move(Other.GetUniquePtr());
+        return *this;
+    }
 
     /**
      * 从std::unique_ptr赋值
