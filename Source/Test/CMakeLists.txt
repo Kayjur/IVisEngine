@@ -12,7 +12,8 @@ file(GLOB_RECURSE TEST_SOURCES main.cpp
 )
 
 # 创建测试可执行程序
-add_executable(IVisTest ${TEST_SOURCES})
+add_executable(IVisTest ${TEST_SOURCES}
+        Tests/Core/Delegates/TestDelegate.cpp)
 
 # 链接必要的库
 target_link_libraries(IVisTest PRIVATE
