@@ -5,6 +5,36 @@
 #include "Container/Array.h"
 #include "HAL/Platform.h"
 
+class FCellArray;
+
+/** 单元信息结构体 */
+struct FCellInfo
+{
+    /** 顶点索引类型 */
+    using VertexIndexType = int32;
+
+    /** 单元索引类型 */
+    using CellIndexType = int32;
+
+    using SizeType = uint64;
+
+    /** 单元类型 */
+    ECellType CellType;
+
+    /** 顶点索引列表 */
+    TArray<VertexIndexType> VertexIndices;
+
+    FCellInfo() : CellType(ECellType::None) {}
+    FCellInfo(ECellType InType, const TArray<VertexIndexType>& InIndices)
+        : CellType(InType), VertexIndices(InIndices) {}
+
+    /** 获取指定索引的元素（不检查边界） */
+    VertexIndexType& operator[](SizeType Index) { return VertexIndices[Index]; }
+    const VertexIndexType& operator[](SizeType Index) const { return VertexIndices[Index]; }
+
+    [[nodiscard]] SizeType Num() const { return VertexIndices.Num(); }
+};
+
 /**
  * FCellArray - 单元数组类
  * 
@@ -34,26 +64,12 @@ public:
     // ============================================================================
     // 类型定义
     // ============================================================================
-    
     /** 顶点索引类型 */
-    using VertexIndexType = uint32;
-    
-    /** 单元索引类型 */
-    using CellIndexType = uint32;
+    using VertexIndexType = FCellInfo::VertexIndexType;
 
-    /** 单元信息结构体（用于批量操作） */
-    struct FCellInfo
-    {
-        /** 单元类型 */
-        ECellType CellType;
-        
-        /** 顶点索引列表 */
-        TArray<VertexIndexType> VertexIndices;
-        
-        FCellInfo() : CellType(ECellType::None) {}
-        FCellInfo(ECellType InType, const TArray<VertexIndexType>& InIndices)
-            : CellType(InType), VertexIndices(InIndices) {}
-    };
+    /** 单元索引类型 */
+    using CellIndexType = FCellInfo::CellIndexType;
+
 
 private:
     // ============================================================================
@@ -106,13 +122,13 @@ public:
     // ============================================================================
     
     /** 获取单元数量 */
-    uint32 GetCellCount() const;
+    [[nodiscard]] uint32 GetCellCount() const;
     
     /** 获取顶点索引总数 */
-    uint32 GetVertexIndexCount() const;
+    [[nodiscard]] uint32 GetVertexIndexCount() const;
     
     /** 检查是否为空 */
-    bool IsEmpty() const;
+    [[nodiscard]] bool IsEmpty() const;
     
     /** 预留容量（优化内存分配） */
     void Reserve(uint32 Capacity);
@@ -162,7 +178,7 @@ public:
      * @param CellIndex 单元索引
      * @return 单元类型，如果索引无效返回 Unknown
      */
-    ECellType GetCellType(CellIndexType CellIndex) const;
+    [[nodiscard]] ECellType GetCellType(CellIndexType CellIndex) const;
     
     /**
      * 获取指定索引的单元的顶点索引列表
@@ -177,7 +193,7 @@ public:
      * @param CellIndex 单元索引
      * @return 顶点数量，如果索引无效返回 0
      */
-    uint32 GetCellVertexCount(CellIndexType CellIndex) const;
+    [[nodiscard]] uint32 GetCellVertexCount(CellIndexType CellIndex) const;
     
     /**
      * 获取指定索引的单元的顶点索引（通过指针访问，更高效）
@@ -233,14 +249,14 @@ public:
      * @param CellIndex 单元索引
      * @return 是否有效
      */
-    bool IsValidCellIndex(CellIndexType CellIndex) const;
+    [[nodiscard]] bool IsValidCellIndex(CellIndexType CellIndex) const;
     
     /**
      * 获取指定类型的单元数量
      * @param CellType 单元类型
      * @return 该类型的单元数量
      */
-    uint32 GetCellCountByType(ECellType CellType) const;
+    [[nodiscard]] uint32 GetCellCountByType(ECellType CellType) const;
     
     /**
      * 获取所有单元类型（去重）
@@ -270,7 +286,7 @@ public:
      * 检查是否启用内存重用
      * @return 是否启用
      */
-    bool IsMemoryReuseEnabled() const;
+    [[nodiscard]] bool IsMemoryReuseEnabled() const;
     
     /**
      * 压缩存储（移除未使用的内存）
@@ -281,46 +297,5 @@ public:
      * 获取当前内存使用情况（估算）
      * @return 内存使用量（字节）
      */
-    uint64 GetMemoryUsage() const;
-
-    // ============================================================================
-    // 迭代器支持
-    // ============================================================================
-    
-    /**
-     * 单元迭代器（只读）
-     */
-    class ConstIterator
-    {
-    public:
-        ConstIterator(const FCellArray* InArray, CellIndexType InIndex)
-            : Array(InArray)
-            , Index(InIndex)
-        {}
-        
-        bool operator!=(const ConstIterator& Other) const
-        {
-            return Index != Other.Index;
-        }
-        
-        ConstIterator& operator++()
-        {
-            ++Index;
-            return *this;
-        }
-        
-        FCellInfo operator*() const
-        {
-            FCellInfo Info;
-            Array->GetCell(Index, Info);
-            return Info;
-        }
-        
-    private:
-        const FCellArray* Array;
-        CellIndexType Index;
-    };
-    
-    ConstIterator begin() const;
-    ConstIterator end() const;
+    [[nodiscard]] uint64 GetMemoryUsage() const;
 };

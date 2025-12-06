@@ -116,8 +116,11 @@ void FCellArray::AddCell(ECellType CellType, const TArray<VertexIndexType>& InVe
     // 记录当前单元的起始位置
     CellOffsets.Add(static_cast<uint32>(VertexIndices.Num()));
     
-    // 添加顶点索引（批量添加以提高效率）
-    VertexIndices.Append(InVertexIndices);
+    // 添加顶点索引
+    for (uint32 i = 0; i < InVertexIndices.Num(); ++i)
+    {
+        VertexIndices.Add(InVertexIndices[i]);
+    }
     
     // 记录单元类型
     CellTypes.Add(CellType);
@@ -132,14 +135,12 @@ void FCellArray::AddCell(ECellType CellType, const VertexIndexType* InVertexIndi
     
     // 记录当前单元的起始位置
     CellOffsets.Add(static_cast<uint32>(VertexIndices.Num()));
-    
-    // 添加顶点索引
-    VertexIndices.Reserve(VertexIndices.Num() + VertexCount);
+
     for (uint32 i = 0; i < VertexCount; ++i)
     {
         VertexIndices.Add(InVertexIndices[i]);
     }
-    
+
     // 记录单元类型
     CellTypes.Add(CellType);
 }
@@ -188,7 +189,7 @@ ECellType FCellArray::GetCellType(CellIndexType CellIndex) const
 {
     if (!IsValidCellIndex(CellIndex))
     {
-        return ECellType::Unknown;
+        return ECellType::None;
     }
     return CellTypes[CellIndex];
 }
@@ -454,18 +455,4 @@ uint64 FCellArray::GetMemoryUsage() const
     Usage += CellOffsets.Capacity() * sizeof(uint32);
     Usage += CellTypes.Capacity() * sizeof(ECellType);
     return Usage;
-}
-
-// ============================================================================
-// 迭代器支持
-// ============================================================================
-
-FCellArray::ConstIterator FCellArray::begin() const
-{
-    return ConstIterator(this, 0);
-}
-
-FCellArray::ConstIterator FCellArray::end() const
-{
-    return ConstIterator(this, GetCellCount());
 }

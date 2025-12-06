@@ -102,7 +102,10 @@ public:
     
     /** 检查是否为空 */
     bool IsEmpty() const { return Data.empty(); }
-    
+
+    /** 设置容量 */
+    void Resize(SizeType Size) { Data.resize(Size); }
+
     /** 预留容量 */
     void Reserve(SizeType Capacity) { Data.reserve(Capacity); }
     

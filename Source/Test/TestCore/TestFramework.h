@@ -4,8 +4,8 @@
 #include <functional>
 #include <string>
 #include <iostream>
-#include <cassert>
 #include <cstring>
+#include "TestTimeUtil.h"
 
 namespace ivis::test {
 
