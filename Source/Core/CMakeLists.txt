@@ -15,6 +15,10 @@ file(GLOB_RECURSE CORE_SOURCES
 # STATIC 表示生成静态库（.a 或 .lib 文件）
 add_library(IVisCore STATIC ${CORE_SOURCES}
         Public/HAL/Platform.h
+        Public/Cell/CellType.cpp
+        Public/Cell/CellType.h
+        Public/Container/CellArray.cpp
+        Public/Container/CellArray.h
 )
 
 # 设置公共头文件包含目录
