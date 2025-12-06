@@ -24,4 +24,5 @@ target_include_directories(IVisFramework PUBLIC
 # 链接依赖库
 target_link_libraries(IVisFramework PUBLIC
     IVisCore
+    IVisRenderer
 )
