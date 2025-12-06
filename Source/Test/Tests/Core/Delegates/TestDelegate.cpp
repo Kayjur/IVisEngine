@@ -5,20 +5,20 @@
 TEST_GROUP(TestDelegate)
 
 namespace {
-    int32_t GlobalValue = 0;
-    int32_t CallCount = 0;
+    int32 GlobalValue = 0;
+    int32 CallCount = 0;
 
     // 无返回值委托声明
     DECLARE_DELEGATE(FOnDelegateNoParams);
-    DECLARE_DELEGATE_OneParam(FOnDelegateOneParams, int32_t);
-    DECLARE_DELEGATE_TwoParams(FOnDelegateTwoParams, int32_t, int32_t);
-    DECLARE_DELEGATE_ThreeParams(FOnDelegateThreeParams, int32_t, int32_t, int32_t);
-    DECLARE_DELEGATE_FourParams(FOnDelegateFourParams, int32_t, int32_t, int32_t, int32_t);
+    DECLARE_DELEGATE_OneParam(FOnDelegateOneParams, int32);
+    DECLARE_DELEGATE_TwoParams(FOnDelegateTwoParams, int32, int32);
+    DECLARE_DELEGATE_ThreeParams(FOnDelegateThreeParams, int32, int32, int32);
+    DECLARE_DELEGATE_FourParams(FOnDelegateFourParams, int32, int32, int32, int32);
 
     // 有返回值委托声明
-    DECLARE_DELEGATE_RetVal(int32_t, FOnDelegateRetVal);
-    DECLARE_DELEGATE_RetVal_OneParam(int32_t, FOnDelegateRetValOneParam, int32_t);
-    DECLARE_DELEGATE_RetVal_TwoParams(int32_t, FOnDelegateRetValTwoParams, int32_t, int32_t);
+    DECLARE_DELEGATE_RetVal(int32, FOnDelegateRetVal);
+    DECLARE_DELEGATE_RetVal_OneParam(int32, FOnDelegateRetValOneParam, int32);
+    DECLARE_DELEGATE_RetVal_TwoParams(int32, FOnDelegateRetValTwoParams, int32, int32);
 
     class IDelegateProxy {
     public:
@@ -40,37 +40,37 @@ namespace {
             CallCount++;
         }
         
-        void OnDelegateOneParamsChanged(int32_t Val) {
+        void OnDelegateOneParamsChanged(int32 Val) {
             GlobalValue = Val;
             CallCount++;
         }
         
-        void OnDelegateTwoParamsChanged(int32_t Val1, int32_t Val2) {
+        void OnDelegateTwoParamsChanged(int32 Val1, int32 Val2) {
             GlobalValue = Val1 + Val2;
             CallCount++;
         }
         
-        void OnDelegateThreeParamsChanged(int32_t Val1, int32_t Val2, int32_t Val3) {
+        void OnDelegateThreeParamsChanged(int32 Val1, int32 Val2, int32 Val3) {
             GlobalValue = Val1 + Val2 + Val3;
             CallCount++;
         }
         
-        void OnDelegateFourParamsChanged(int32_t Val1, int32_t Val2, int32_t Val3, int32_t Val4) {
+        void OnDelegateFourParamsChanged(int32 Val1, int32 Val2, int32 Val3, int32 Val4) {
             GlobalValue = Val1 + Val2 + Val3 + Val4;
             CallCount++;
         }
         
-        int32_t OnDelegateRetValChanged() {
+        int32 OnDelegateRetValChanged() {
             CallCount++;
             return 42;
         }
         
-        int32_t OnDelegateRetValOneParamChanged(int32_t Val) {
+        int32 OnDelegateRetValOneParamChanged(int32 Val) {
             CallCount++;
             return Val * 2;
         }
         
-        int32_t OnDelegateRetValTwoParamsChanged(int32_t Val1, int32_t Val2) {
+        int32 OnDelegateRetValTwoParamsChanged(int32 Val1, int32 Val2) {
             CallCount++;
             return Val1 + Val2;
         }
@@ -80,15 +80,15 @@ namespace {
         GlobalValue = 100;
     }
     
-    static void StaticFunctionWithParam(int32_t Val) {
+    static void StaticFunctionWithParam(int32 Val) {
         GlobalValue = Val * 10;
     }
     
-    static int32_t StaticFunctionRetVal() {
+    static int32 StaticFunctionRetVal() {
         return 200;
     }
     
-    static int32_t StaticFunctionRetValWithParam(int32_t Val) {
+    static int32 StaticFunctionRetValWithParam(int32 Val) {
         return Val * 3;
     }
 
@@ -137,14 +137,14 @@ TEST(TestDelegate_BindLambda)
     ASSERT(GlobalValue == 10);
     
     // 单参数 Lambda
-    Proxy->OnDelegateOneParams.Bind([](int32_t Val) {
+    Proxy->OnDelegateOneParams.Bind([](int32 Val) {
         GlobalValue = Val;
     });
     Proxy->OnDelegateOneParams.Execute(20);
     ASSERT(GlobalValue == 20);
     
     // 多参数 Lambda
-    Proxy->OnDelegateTwoParams.Bind([](int32_t Val1, int32_t Val2) {
+    Proxy->OnDelegateTwoParams.Bind([](int32 Val1, int32 Val2) {
         GlobalValue = Val1 + Val2;
     });
     Proxy->OnDelegateTwoParams.Execute(5, 15);
@@ -182,10 +182,10 @@ TEST(TestDelegate_ReturnValue)
     SetUp();
     
     // Lambda 返回值
-    Proxy->OnDelegateRetVal.Bind([]() -> int32_t {
+    Proxy->OnDelegateRetVal.Bind([]() -> int32 {
         return 100;
     });
-    int32_t Result = Proxy->OnDelegateRetVal.Execute();
+    int32 Result = Proxy->OnDelegateRetVal.Execute();
     ASSERT(Result == 100);
     
     // 静态函数返回值
@@ -199,7 +199,7 @@ TEST(TestDelegate_ReturnValue)
     ASSERT(Result == 42);
     
     // 带参数返回值
-    Proxy->OnDelegateRetValOneParam.Bind([](int32_t Val) -> int32_t {
+    Proxy->OnDelegateRetValOneParam.Bind([](int32 Val) -> int32 {
         return Val * 2;
     });
     Result = Proxy->OnDelegateRetValOneParam.Execute(21);

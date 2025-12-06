@@ -12,25 +12,25 @@
  *   class MyClass {
  *   public:
  *       // 声明事件类型
- *       using FOnValueChanged = TEvent<void(int32_t)>;
+ *       using FOnValueChanged = TEvent<void(int32)>;
  *       
  *       // 声明事件实例
  *       FOnValueChanged OnValueChanged;
  *       
- *       void SetValue(int32_t NewValue) {
+ *       void SetValue(int32 NewValue) {
  *           Value = NewValue;
  *           // 只有 MyClass 可以广播
  *           OnValueChanged.Broadcast(NewValue);
  *       }
  *   
  *   private:
- *       int32_t Value = 0;
+ *       int32 Value = 0;
  *   };
  * 
  *   // 在其他类中订阅事件
  *   class Observer {
  *   public:
- *       void OnValueChangedHandler(int32_t NewValue) {
+ *       void OnValueChangedHandler(int32 NewValue) {
  *           printf("Value changed to: %d\n", NewValue);
  *       }
  *   };
@@ -40,7 +40,7 @@
  *   MyObj.OnValueChanged.AddRaw(&Obs, &Observer::OnValueChangedHandler);
  *   MyObj.SetValue(42);  // 触发事件，输出: Value changed to: 42
  * 
- * @tparam Signature 函数签名（如 void(), void(int32_t), void(int32_t, float) 等）
+ * @tparam Signature 函数签名（如 void(), void(int32), void(int32, float) 等）
  */
 template<typename Signature>
 class TEvent;
@@ -172,7 +172,7 @@ public:
     }
     
     /** 获取已绑定的委托数量 */
-    int32_t GetBoundCount() const
+    int32 GetBoundCount() const
     {
         return MulticastDelegate.GetBoundCount();
     }
@@ -222,17 +222,17 @@ private:
  * 使用示例：
  *   class MyClass {
  *   public:
- *       using FOnValueChanged = TEvent<void(int32_t)>;
+ *       using FOnValueChanged = TEvent<void(int32)>;
  *       FOnValueChanged OnValueChanged;
  *       
- *       void SetValue(int32_t NewValue) {
+ *       void SetValue(int32 NewValue) {
  *           Value = NewValue;
  *           // 通过友元类广播
  *           TEventFriend<MyClass>::Broadcast(OnValueChanged, NewValue);
  *       }
  *   
  *   private:
- *       int32_t Value = 0;
+ *       int32 Value = 0;
  *   };
  */
 template<typename OwnerClass>
@@ -265,9 +265,9 @@ public:
  * 方式1：直接在类中调用 Broadcast（推荐）
  *   class MyClass {
  *   public:
- *       TEvent<void(int32_t)> OnValueChanged;
+ *       TEvent<void(int32)> OnValueChanged;
  *       
- *       void SetValue(int32_t NewValue) {
+ *       void SetValue(int32 NewValue) {
  *           Value = NewValue;
  *           OnValueChanged.Broadcast(NewValue);  // 直接调用
  *       }
@@ -276,7 +276,7 @@ public:
  * 方式2：使用私有成员 + 公共访问器
  *   class MyClass {
  *   private:
- *       TEvent<void(int32_t)> OnValueChanged;
+ *       TEvent<void(int32)> OnValueChanged;
  *   
  *   public:
  *       // 只暴露订阅接口
@@ -284,7 +284,7 @@ public:
  *           OnValueChanged.AddLambda(...);
  *       }
  *       
- *       void SetValue(int32_t NewValue) {
+ *       void SetValue(int32 NewValue) {
  *           Value = NewValue;
  *           OnValueChanged.Broadcast(NewValue);  // 类内部可以调用
  *       }

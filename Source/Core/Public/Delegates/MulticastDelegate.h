@@ -19,12 +19,12 @@
  *   MyMulticast.Broadcast();  // 输出: First\nSecond\n
  * 
  *   // 带参数多播委托
- *   TMulticastDelegate<void(int32_t)> MyMulticast2;
- *   MyMulticast2.AddLambda([](int32_t X) { printf("%d\n", X); });
- *   MyMulticast2.AddLambda([](int32_t X) { printf("Value: %d\n", X); });
+ *   TMulticastDelegate<void(int32)> MyMulticast2;
+ *   MyMulticast2.AddLambda([](int32 X) { printf("%d\n", X); });
+ *   MyMulticast2.AddLambda([](int32 X) { printf("Value: %d\n", X); });
  *   MyMulticast2.Broadcast(42);  // 输出: 42\nValue: 42\n
  * 
- * @tparam Signature 函数签名（如 void(), void(int32_t), void(int32_t, float) 等）
+ * @tparam Signature 函数签名（如 void(), void(int32), void(int32, float) 等）
  */
 template<typename Signature>
 class TMulticastDelegate;
@@ -184,7 +184,7 @@ public:
     {
         // 注意：由于 std::function 的比较限制，这里只能通过遍历移除
         // 实际使用中，建议保存委托句柄用于精确移除
-        for (int32_t i = Delegates.Num() - 1; i >= 0; --i)
+        for (int32 i = Delegates.Num() - 1; i >= 0; --i)
         {
             // 无法直接比较 std::function，这里提供一个基础实现
             // 实际使用时建议使用 RemoveDelegate 或保存句柄
@@ -217,8 +217,8 @@ public:
     void Broadcast(ParamTypes... Params) const
     {
         // 使用索引迭代，避免复制容器，提高效率
-        const int32_t Num = Delegates.Num();
-        for (int32_t i = 0; i < Num; ++i)
+        const int32 Num = Delegates.Num();
+        for (int32 i = 0; i < Num; ++i)
         {
             // 检查索引是否仍然有效（可能在回调中被移除）
             if (i < Delegates.Num() && Delegates[i].IsBound())
@@ -246,9 +246,9 @@ public:
     }
     
     /** 获取已绑定的委托数量 */
-    int32_t GetBoundCount() const
+    int32 GetBoundCount() const
     {
-        int32_t Count = 0;
+        int32 Count = 0;
         for (const auto& Delegate : Delegates)
         {
             if (Delegate.IsBound())

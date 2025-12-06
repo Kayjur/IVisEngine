@@ -11,10 +11,10 @@
  * 使用示例：
  *   // 在头文件中声明委托类型
  *   DECLARE_DELEGATE(FMyDelegate);
- *   DECLARE_DELEGATE_OneParam(FMyDelegateWithParam, int32_t);
- *   DECLARE_DELEGATE_TwoParams(FMyDelegateWithTwoParams, int32_t, float);
- *   DECLARE_DELEGATE_RetVal(int32_t, FMyDelegateWithReturn);
- *   DECLARE_DELEGATE_RetVal_OneParam(int32_t, FMyDelegateWithReturnAndParam, int32_t);
+ *   DECLARE_DELEGATE_OneParam(FMyDelegateWithParam, int32);
+ *   DECLARE_DELEGATE_TwoParams(FMyDelegateWithTwoParams, int32, float);
+ *   DECLARE_DELEGATE_RetVal(int32, FMyDelegateWithReturn);
+ *   DECLARE_DELEGATE_RetVal_OneParam(int32, FMyDelegateWithReturnAndParam, int32);
  * 
  *   // 在类中使用
  *   class MyClass {
@@ -163,111 +163,3 @@
 /** 声明动态多播委托（五个参数） */
 #define DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(DelegateName, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type) \
     DECLARE_MULTICAST_DELEGATE_FiveParams(DelegateName, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type)
-
-// ============================================================================
-// 使用示例（注释形式）
-// ============================================================================
-
-/*
- * 单播委托使用示例：
- * 
- * // 在头文件中声明
- * DECLARE_DELEGATE(FOnButtonClicked);
- * DECLARE_DELEGATE_OneParam(FOnValueChanged, int32_t);
- * DECLARE_DELEGATE_TwoParams(FOnPositionChanged, float, float);
- * DECLARE_DELEGATE_RetVal(bool, FOnCanExecute);
- * DECLARE_DELEGATE_RetVal_OneParam(int32_t, FOnCalculate, int32_t);
- * 
- * // 在类中使用
- * class MyClass {
- * public:
- *     FOnButtonClicked OnButtonClicked;
- *     FOnValueChanged OnValueChanged;
- *     
- *     void DoSomething() {
- *         OnButtonClicked.Execute();
- *         OnValueChanged.Execute(42);
- *     }
- * };
- * 
- * // 绑定和使用
- * MyClass MyObj;
- * MyObj.OnButtonClicked.BindLambda([]() {
- *     printf("Button clicked!\n");
- * });
- * MyObj.OnValueChanged.BindLambda([](int32_t Value) {
- *     printf("Value changed to: %d\n", Value);
- * });
- * 
- * ============================================================================
- * 
- * 多播委托使用示例：
- * 
- * // 在头文件中声明
- * DECLARE_MULTICAST_DELEGATE(FOnGameStarted);
- * DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerJoined, int32_t);
- * 
- * // 在类中使用
- * class GameManager {
- * public:
- *     FOnGameStarted OnGameStarted;
- *     FOnPlayerJoined OnPlayerJoined;
- *     
- *     void StartGame() {
- *         OnGameStarted.Broadcast();
- *     }
- *     
- *     void AddPlayer(int32_t PlayerID) {
- *         OnPlayerJoined.Broadcast(PlayerID);
- *     }
- * };
- * 
- * // 订阅事件
- * GameManager Manager;
- * Manager.OnGameStarted.AddLambda([]() {
- *     printf("Game started!\n");
- * });
- * Manager.OnPlayerJoined.AddLambda([](int32_t ID) {
- *     printf("Player %d joined\n", ID);
- * });
- * 
- * ============================================================================
- * 
- * 事件使用示例：
- * 
- * // 在头文件中声明
- * DECLARE_EVENT(MyClass, FOnValueChanged);
- * DECLARE_EVENT_OneParam(MyClass, FOnPositionChanged, float);
- * 
- * // 在类中使用
- * class MyClass {
- * public:
- *     FOnValueChanged OnValueChanged;
- *     FOnPositionChanged OnPositionChanged;
- *     
- *     void SetValue(int32_t NewValue) {
- *         Value = NewValue;
- *         // 只有 MyClass 可以广播
- *         OnValueChanged.Broadcast();
- *     }
- *     
- *     void SetPosition(float X) {
- *         Position = X;
- *         OnPositionChanged.Broadcast(X);
- *     }
- * 
- * private:
- *     int32_t Value = 0;
- *     float Position = 0.0f;
- * };
- * 
- * // 外部类只能订阅
- * MyClass MyObj;
- * MyObj.OnValueChanged.AddLambda([]() {
- *     printf("Value changed!\n");
- * });
- * MyObj.OnPositionChanged.AddLambda([](float X) {
- *     printf("Position changed to: %f\n", X);
- * });
- */
-

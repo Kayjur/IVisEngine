@@ -6,12 +6,12 @@
 TEST_GROUP(TestMulticastDelegate)
 
 namespace {
-    int32_t GlobalValue = 0;
-    int32_t CallCount = 0;
+    int32 GlobalValue = 0;
+    int32 CallCount = 0;
 
     // 多播委托声明
     DECLARE_MULTICAST_DELEGATE(FOnMulticastNoParams);
-    DECLARE_MULTICAST_DELEGATE_OneParam(FOnMulticastOneParam, int32_t);
+    DECLARE_MULTICAST_DELEGATE_OneParam(FOnMulticastOneParam, int32);
 
     class IMulticastProxy {
     public:
@@ -26,7 +26,7 @@ namespace {
             CallCount++;
         }
         
-        void OnMulticastOneParamChanged(int32_t Val) {
+        void OnMulticastOneParamChanged(int32 Val) {
             GlobalValue = Val;
             CallCount++;
         }
@@ -90,10 +90,10 @@ TEST(TestMulticastDelegate_WithParams)
     SetUp();
     
     // 带参数的多播委托
-    Proxy->OnMulticastOneParam.AddLambda([](int32_t Val) {
+    Proxy->OnMulticastOneParam.AddLambda([](int32 Val) {
         GlobalValue += Val;
     });
-    Proxy->OnMulticastOneParam.AddLambda([](int32_t Val) {
+    Proxy->OnMulticastOneParam.AddLambda([](int32 Val) {
         GlobalValue += Val * 2;
     });
     

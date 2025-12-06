@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <cstdint>
+#include "HAL/Platform.h"
 
 /**
  * TArray - 动态数组容器类
@@ -224,7 +225,7 @@ public:
     // ============================================================================
     
     /** 查找元素，返回索引，未找到返回 -1 */
-    int32_t Find(const T& Item) const
+    int32 Find(const T& Item) const
     {
         auto It = std::find(Data.begin(), Data.end(), Item);
         if (It != Data.end())
@@ -235,7 +236,7 @@ public:
     }
     
     /** 从末尾查找元素，返回索引，未找到返回 -1 */
-    int32_t FindLast(const T& Item) const
+    int32 FindLast(const T& Item) const
     {
         auto It = std::find(Data.rbegin(), Data.rend(), Item);
         if (It != Data.rend())

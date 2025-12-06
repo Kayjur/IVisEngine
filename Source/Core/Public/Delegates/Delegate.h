@@ -17,41 +17,41 @@
  *   MyDelegate.Execute();
  * 
  *   // 带参数委托
- *   TDelegate<void(int32_t, float)> MyDelegate2;
- *   MyDelegate2.Bind([](int32_t X, float Y) { printf("%d %f\n", X, Y); });
+ *   TDelegate<void(int32, float)> MyDelegate2;
+ *   MyDelegate2.Bind([](int32 X, float Y) { printf("%d %f\n", X, Y); });
  *   MyDelegate2.Execute(10, 3.14f);
  * 
  *   // 有返回值委托
- *   TDelegate<int32_t(int32_t)> ReturnDelegate;
- *   ReturnDelegate.Bind([](int32_t X) -> int32_t { return X * 2; });
- *   int32_t Result = ReturnDelegate.Execute(21);  // Result = 42
- *   // 如果未绑定，Execute 返回 RetType{}（对于 int32_t 是 0）
+ *   TDelegate<int32(int32)> ReturnDelegate;
+ *   ReturnDelegate.Bind([](int32 X) -> int32 { return X * 2; });
+ *   int32 Result = ReturnDelegate.Execute(21);  // Result = 42
+ *   // 如果未绑定，Execute 返回 RetType{}（对于 int32 是 0）
  * 
  *   // 静态函数绑定
- *   void StaticFunc(int32_t Value) { printf("Static: %d\n", Value); }
- *   TDelegate<void(int32_t)> StaticDelegate;
+ *   void StaticFunc(int32 Value) { printf("Static: %d\n", Value); }
+ *   TDelegate<void(int32)> StaticDelegate;
  *   StaticDelegate.Bind(&StaticFunc);
  *   StaticDelegate.Execute(100);
  * 
  *   // 成员函数绑定（原始指针）
  *   class MyClass {
  *   public:
- *       void MyFunction(int32_t Value) { printf("Value: %d\n", Value); }
+ *       void MyFunction(int32 Value) { printf("Value: %d\n", Value); }
  *   };
  *   MyClass Obj;
- *   TDelegate<void(int32_t)> Delegate;
+ *   TDelegate<void(int32)> Delegate;
  *   Delegate.Bind(&Obj, &MyClass::MyFunction);  // 统一接口
  *   Delegate.Broadcast(42);
  * 
  *   // 成员函数绑定（共享指针）
  *   auto SharedObj = std::make_shared<MyClass>();
- *   TDelegate<void(int32_t)> SafeDelegate;
+ *   TDelegate<void(int32)> SafeDelegate;
  *   SafeDelegate.Bind(SharedObj, &MyClass::MyFunction);  // 统一接口
  *   SafeDelegate.Broadcast(42);
  * 
  * 注意：为了兼容性，原有的 BindLambda、BindStatic、BindObject、BindSharedPtrObject 函数仍然可用
  * 
- * @tparam Signature 函数签名（如 void(), void(int32_t), int32_t(int32_t) 等）
+ * @tparam Signature 函数签名（如 void(), void(int32), int32(int32) 等）
  */
 template<typename Signature>
 class TDelegate;

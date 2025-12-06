@@ -24,7 +24,7 @@ TEST(FindAndRemove)
 {
     TArray<int> Array{1, 2, 3, 4, 5};
     
-    int32_t Index = Array.Find(3);
+    int32 Index = Array.Find(3);
     ASSERT(Index == 2);
     
     Array.RemoveAt(1);
