@@ -11,8 +11,6 @@ uint32 ICellType::GetStandardVertexCount(ECellType CellType)
     {
         case ECellType::None:
             return 0;
-        case ECellType::Vertex:
-            return 1;
         case ECellType::Line:
             return 2;
         case ECellType::PolyLine:
@@ -48,7 +46,6 @@ int32 ICellType::GetCellDimension(ECellType CellType)
     switch (CellType)
     {
         case ECellType::None:
-        case ECellType::Vertex:
             return 0;
         case ECellType::Line:
         case ECellType::PolyLine:

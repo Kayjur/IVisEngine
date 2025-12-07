@@ -19,6 +19,7 @@ add_library(IVisCore STATIC ${CORE_SOURCES}
         Public/Cell/CellType.h
         Private/Container/CellArray.cpp
         Public/Container/CellArray.h
+        Private/Field/Field.cpp
 )
 
 # 设置公共头文件包含目录

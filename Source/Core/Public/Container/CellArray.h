@@ -1,6 +1,5 @@
 #pragma once
 
-#include "CAE/CAETypes.h"
 #include "Cell/CellType.h"
 #include "Container/Array.h"
 #include "HAL/Platform.h"
@@ -25,12 +24,14 @@ struct FCellInfo
     TArray<VertexIndexType> VertexIndices;
 
     FCellInfo() : CellType(ECellType::None) {}
-    FCellInfo(ECellType InType, const TArray<VertexIndexType>& InIndices)
+    FCellInfo(const ECellType InType, const TArray<VertexIndexType>& InIndices)
         : CellType(InType), VertexIndices(InIndices) {}
+    FCellInfo(const ECellType InType, TArray<VertexIndexType>&& InIndices)
+        : CellType(InType), VertexIndices(std::move(InIndices)) {}
 
     /** 获取指定索引的元素（不检查边界） */
-    VertexIndexType& operator[](SizeType Index) { return VertexIndices[Index]; }
-    const VertexIndexType& operator[](SizeType Index) const { return VertexIndices[Index]; }
+    VertexIndexType& operator[](const SizeType Index) { return VertexIndices[Index]; }
+    const VertexIndexType& operator[](const SizeType Index) const { return VertexIndices[Index]; }
 
     [[nodiscard]] SizeType Num() const { return VertexIndices.Num(); }
 };

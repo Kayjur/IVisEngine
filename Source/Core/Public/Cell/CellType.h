@@ -10,7 +10,6 @@
 enum class ECellType : uint8
 {
     None = 0,
-    Vertex,         // 点单元
     Line,           // 线单元
     PolyLine,       // 折线单元
     Triangle,       // 三角形单元
@@ -87,7 +86,6 @@ inline std::string EnumToString(ECellType Type)
     switch (Type)
     {
         case ECellType::None: return "None";
-        case ECellType::Vertex: return "Vertex";
         case ECellType::Line: return "Line";
         case ECellType::PolyLine: return "PolyLine";
         case ECellType::Triangle: return "Triangle";
