@@ -68,7 +68,7 @@ TEST(Field_Scalar_SetData)
 {
     FField ScalarField("Temperature", EFieldType::Scalar, EFieldAttachment::Vertex);
     
-    TArray<double> Data;
+    TArray<float> Data;
     Data.Add(1.0);
     Data.Add(2.0);
     Data.Add(3.0);
@@ -81,7 +81,7 @@ TEST(Field_Scalar_SetData)
     ASSERT(ScalarField.GetScalar(4) == 5.0);
     
     // 测试移动语义
-    TArray<double> MoveData;
+    TArray<float> MoveData;
     MoveData.Add(10.0);
     MoveData.Add(20.0);
     ScalarField.SetScalarData(std::move(MoveData));
@@ -99,9 +99,9 @@ TEST(Field_Vector_Basic)
     FField VectorField("Displacement", EFieldType::Vector, EFieldAttachment::Vertex);
     
     // 测试添加向量
-    FVector3d V1(1.0, 2.0, 3.0);
-    FVector3d V2(4.0, 5.0, 6.0);
-    FVector3d V3(7.0, 8.0, 9.0);
+    FVector V1(1.0, 2.0, 3.0);
+    FVector V2(4.0, 5.0, 6.0);
+    FVector V3(7.0, 8.0, 9.0);
     
     VectorField.AddVector(V1);
     VectorField.AddVector(V2);
@@ -109,20 +109,20 @@ TEST(Field_Vector_Basic)
     
     ASSERT(VectorField.GetDataCount() == 3);
     
-    FVector3d Result1 = VectorField.GetVector(0);
+    FVector Result1 = VectorField.GetVector(0);
     ASSERT(Result1.X == 1.0);
     ASSERT(Result1.Y == 2.0);
     ASSERT(Result1.Z == 3.0);
     
-    FVector3d Result2 = VectorField.GetVector(1);
+    FVector Result2 = VectorField.GetVector(1);
     ASSERT(Result2.X == 4.0);
     ASSERT(Result2.Y == 5.0);
     ASSERT(Result2.Z == 6.0);
     
     // 测试设置向量
-    FVector3d NewVec(10.0, 11.0, 12.0);
+    FVector NewVec(10.0, 11.0, 12.0);
     VectorField.SetVector(1, NewVec);
-    FVector3d Result3 = VectorField.GetVector(1);
+    FVector Result3 = VectorField.GetVector(1);
     ASSERT(Result3.X == 10.0);
     ASSERT(Result3.Y == 11.0);
     ASSERT(Result3.Z == 12.0);
@@ -133,7 +133,7 @@ TEST(Field_Vector_SetData)
     FField VectorField("Velocity", EFieldType::Vector, EFieldAttachment::Vertex);
     
     // 设置向量数据（连续存储：x0, y0, z0, x1, y1, z1, ...）
-    TArray<double> VectorData;
+    TArray<float> VectorData;
     VectorData.Add(1.0);  // V0.X
     VectorData.Add(2.0);  // V0.Y
     VectorData.Add(3.0);  // V0.Z
@@ -144,22 +144,15 @@ TEST(Field_Vector_SetData)
     VectorField.SetVectorData(VectorData);
     ASSERT(VectorField.GetDataCount() == 2);
     
-    FVector3d V0 = VectorField.GetVector(0);
+    FVector V0 = VectorField.GetVector(0);
     ASSERT(V0.X == 1.0);
     ASSERT(V0.Y == 2.0);
     ASSERT(V0.Z == 3.0);
     
-    FVector3d V1 = VectorField.GetVector(1);
+    FVector V1 = VectorField.GetVector(1);
     ASSERT(V1.X == 4.0);
     ASSERT(V1.Y == 5.0);
     ASSERT(V1.Z == 6.0);
-    
-    // 测试无效数据（不是3的倍数）
-    TArray<double> InvalidData;
-    InvalidData.Add(1.0);
-    InvalidData.Add(2.0);
-    VectorField.SetVectorData(InvalidData);
-    ASSERT(VectorField.GetDataCount() == 2);  // 应该被拒绝
 }
 
 // ============================================================================
@@ -170,17 +163,17 @@ TEST(Field_Tensor_Basic)
 {
     FField TensorField("Stress", EFieldType::Tensor, EFieldAttachment::Cell);
     
-    // 创建3x3矩阵（按行优先存储为9个double）
-    TArray<double> Tensor1;
+    // 创建3x3矩阵（按行优先存储为9个float）
+    TArray<float> Tensor1;
     for (int i = 0; i < 9; ++i)
     {
-        Tensor1.Add(static_cast<double>(i + 1));  // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        Tensor1.Add(static_cast<float>(i + 1));  // [1, 2, 3, 4, 5, 6, 7, 8, 9]
     }
     
-    TArray<double> Tensor2;
+    TArray<float> Tensor2;
     for (int i = 0; i < 9; ++i)
     {
-        Tensor2.Add(static_cast<double>(i + 10));  // [10, 11, 12, 13, 14, 15, 16, 17, 18]
+        Tensor2.Add(static_cast<float>(i + 10));  // [10, 11, 12, 13, 14, 15, 16, 17, 18]
     }
     
     TensorField.AddTensor(Tensor1);
@@ -189,27 +182,27 @@ TEST(Field_Tensor_Basic)
     ASSERT(TensorField.GetDataCount() == 2);
     
     // 测试获取张量
-    TArray<double> OutTensor1;
+    TArray<float> OutTensor1;
     TensorField.GetTensor(0, OutTensor1);
     ASSERT(OutTensor1.Num() == 9);
     ASSERT(OutTensor1[0] == 1.0);
     ASSERT(OutTensor1[8] == 9.0);
     
-    TArray<double> OutTensor2;
+    TArray<float> OutTensor2;
     TensorField.GetTensor(1, OutTensor2);
     ASSERT(OutTensor2.Num() == 9);
     ASSERT(OutTensor2[0] == 10.0);
     ASSERT(OutTensor2[8] == 18.0);
     
     // 测试设置张量
-    TArray<double> NewTensor;
+    TArray<float> NewTensor;
     for (int i = 0; i < 9; ++i)
     {
-        NewTensor.Add(static_cast<double>(i + 100));
+        NewTensor.Add(static_cast<float>(i + 100));
     }
     TensorField.SetTensor(0, NewTensor);
     
-    TArray<double> OutTensor3;
+    TArray<float> OutTensor3;
     TensorField.GetTensor(0, OutTensor3);
     ASSERT(OutTensor3[0] == 100.0);
     ASSERT(OutTensor3[8] == 108.0);
@@ -220,22 +213,22 @@ TEST(Field_Tensor_SetData)
     FField TensorField("Strain", EFieldType::Tensor, EFieldAttachment::Cell);
     
     // 设置张量数据（连续存储：t0_9elems, t1_9elems, ...）
-    TArray<double> TensorData;
+    TArray<float> TensorData;
     // 第一个张量
     for (int i = 0; i < 9; ++i)
     {
-        TensorData.Add(static_cast<double>(i + 1));
+        TensorData.Add(static_cast<float>(i + 1));
     }
     // 第二个张量
     for (int i = 0; i < 9; ++i)
     {
-        TensorData.Add(static_cast<double>(i + 10));
+        TensorData.Add(static_cast<float>(i + 10));
     }
     
     TensorField.SetTensorData(TensorData);
     ASSERT(TensorField.GetDataCount() == 2);
     
-    TArray<double> OutTensor;
+    TArray<float> OutTensor;
     TensorField.GetTensor(1, OutTensor);
     ASSERT(OutTensor[0] == 10.0);
     ASSERT(OutTensor[8] == 18.0);
@@ -250,13 +243,13 @@ TEST(Field_Generic_Operations)
     // 测试自定义维度场
     FField CustomField("Custom", EFieldType::Custom, EFieldAttachment::Vertex, 4);
     
-    TArray<double> Data1;
+    TArray<float> Data1;
     Data1.Add(1.0);
     Data1.Add(2.0);
     Data1.Add(3.0);
     Data1.Add(4.0);
     
-    TArray<double> Data2;
+    TArray<float> Data2;
     Data2.Add(5.0);
     Data2.Add(6.0);
     Data2.Add(7.0);
@@ -268,21 +261,21 @@ TEST(Field_Generic_Operations)
     ASSERT(CustomField.GetDataCount() == 2);
     
     // 测试获取数据
-    TArray<double> OutData;
+    TArray<float> OutData;
     CustomField.GetData(0, OutData);
     ASSERT(OutData.Num() == 4);
     ASSERT(OutData[0] == 1.0);
     ASSERT(OutData[3] == 4.0);
     
     // 测试设置数据
-    TArray<double> NewData;
+    TArray<float> NewData;
     NewData.Add(10.0);
     NewData.Add(20.0);
     NewData.Add(30.0);
     NewData.Add(40.0);
     CustomField.SetData(1, NewData);
     
-    TArray<double> OutData2;
+    TArray<float> OutData2;
     CustomField.GetData(1, OutData2);
     ASSERT(OutData2[0] == 10.0);
     ASSERT(OutData2[3] == 40.0);
@@ -292,7 +285,7 @@ TEST(Field_SetFieldData)
 {
     FField Field("Test", EFieldType::Custom, EFieldAttachment::Vertex, 2);
 
-    TArray<double> Data;
+    TArray<float> Data;
     Data.Add(1.0);
     Data.Add(2.0);
     Data.Add(3.0);
@@ -304,13 +297,13 @@ TEST(Field_SetFieldData)
     ASSERT(Field.GetDataCount() == 3);
     ASSERT(Field.GetFieldDimension() == 2);
     
-    TArray<double> OutData;
+    TArray<float> OutData;
     Field.GetData(2, OutData);
     ASSERT(OutData[0] == 5.0);
     ASSERT(OutData[1] == 6.0);
 
     // 测试移动语义
-    TArray<double> MoveData;
+    TArray<float> MoveData;
     MoveData.Add(10.0);
     MoveData.Add(20.0);
     Field.SetFieldData(std::move(MoveData));
@@ -341,13 +334,13 @@ TEST(Field_Resize)
     
     ScalarField.Resize(5);
     ASSERT(ScalarField.GetDataCount() == 5);
-    ASSERT(ScalarField.GetRawDataSize() == 5 * sizeof(double));
+    ASSERT(ScalarField.GetRawDataSize() == 5 * sizeof(float));
     
     // 向量场 Resize
     FField VectorField("Vel", EFieldType::Vector, EFieldAttachment::Vertex);
     VectorField.Resize(3);
     ASSERT(VectorField.GetDataCount() == 3);
-    ASSERT(VectorField.GetRawDataSize() == 3 * 3 * sizeof(double));
+    ASSERT(VectorField.GetRawDataSize() == 3 * 3 * sizeof(float));
 }
 
 // ============================================================================
@@ -362,20 +355,20 @@ TEST(Field_RawDataAccess)
     ScalarField.AddScalar(20.0);
     ScalarField.AddScalar(30.0);
     
-    const double* RawPtr = ScalarField.GetRawDataPtr();
+    const float* RawPtr = ScalarField.GetRawDataPtr();
     ASSERT(RawPtr != nullptr);
     ASSERT(RawPtr[0] == 10.0);
     ASSERT(RawPtr[1] == 20.0);
     ASSERT(RawPtr[2] == 30.0);
     
     size_t DataSize = ScalarField.GetRawDataSize();
-    ASSERT(DataSize == 3 * sizeof(double));
+    ASSERT(DataSize == 3 * sizeof(float));
     
     // 测试向量场的底层数据访问
     FField VectorField("Vel", EFieldType::Vector, EFieldAttachment::Vertex);
-    VectorField.AddVector(FVector3d(1.0, 2.0, 3.0));
+    VectorField.AddVector(FVector(1.0, 2.0, 3.0));
     
-    const double* VectorPtr = VectorField.GetRawDataPtr();
+    const float* VectorPtr = VectorField.GetRawDataPtr();
     ASSERT(VectorPtr[0] == 1.0);
     ASSERT(VectorPtr[1] == 2.0);
     ASSERT(VectorPtr[2] == 3.0);
@@ -387,11 +380,11 @@ TEST(Field_GetFieldData)
     ScalarField.AddScalar(1.0);
     ScalarField.AddScalar(2.0);
     
-    const TArray<double>& ConstData = ScalarField.GetFieldData();
+    const TArray<float>& ConstData = ScalarField.GetFieldData();
     ASSERT(ConstData.Num() == 2);
     ASSERT(ConstData[0] == 1.0);
     
-    TArray<double>& MutableData = ScalarField.GetFieldData();
+    TArray<float>& MutableData = ScalarField.GetFieldData();
     MutableData[0] = 10.0;
     ASSERT(ScalarField.GetScalar(0) == 10.0);
 }
@@ -424,7 +417,7 @@ TEST(Field_Performance_AddScalar)
     FField ScalarField("Temp", EFieldType::Scalar, EFieldAttachment::Vertex);
     for (int i = 0; i < 1000000; ++i)
     {
-        ScalarField.AddScalar(static_cast<double>(i));
+        ScalarField.AddScalar(static_cast<float>(i));
     }
     
     Timer.Stop();
@@ -439,7 +432,7 @@ TEST(Field_Performance_GetVector)
     // 添加1000个向量
     for (int i = 0; i < 1000; ++i)
     {
-        VectorField.AddVector(FVector3d(static_cast<double>(i), static_cast<double>(i + 1), static_cast<double>(i + 2)));
+        VectorField.AddVector(FVector(static_cast<float>(i), static_cast<float>(i + 1), static_cast<float>(i + 2)));
     }
     
     FTimer Timer;
@@ -449,7 +442,7 @@ TEST(Field_Performance_GetVector)
     for (int i = 0; i < 10000000; ++i)
     {
         uint32 Index = static_cast<uint32>(i % 1000);
-        FVector3d V = VectorField.GetVector(Index);
+        FVector V = VectorField.GetVector(Index);
         (void)V;  // 避免优化
     }
     

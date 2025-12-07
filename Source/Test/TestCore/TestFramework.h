@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cstring>
 #include "TestTimeUtil.h"
+#include "Exception/Exception.h"
 
 namespace ivis::test {
 
@@ -70,14 +71,19 @@ public:
                 std::cout << "✓ 通过" << std::endl;
                 PassedCount++;
             }
+            catch (const FException& e)
+            {
+                std::cerr << "✗ 失败: " << e.GetFullMessage() << std::endl;
+                FailedCount++;
+            }
             catch (const std::exception& e)
             {
-                std::cout << "✗ 失败: " << e.what() << std::endl;
+                std::cerr << "✗ 失败: " << e.what() << std::endl;
                 FailedCount++;
             }
             catch (...)
             {
-                std::cout << "✗ 失败: 未知错误" << std::endl;
+                std::cerr << "✗ 失败: 未知错误" << std::endl;
                 FailedCount++;
             }
         }

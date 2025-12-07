@@ -89,21 +89,21 @@ uint32 FField::GetFieldDimension() const
     return FieldDimension;
 }
 
-const double* FField::GetRawDataPtr() const
+const float* FField::GetRawDataPtr() const
 {
     return Data.GetData();
 }
 
 size_t FField::GetRawDataSize() const
 {
-    return Data.Num() * sizeof(double);
+    return Data.Num() * sizeof(float);
 }
 
 // ============================================================================
 // 标量场操作
 // ============================================================================
 
-void FField::SetScalarData(const TArray<double>& InData)
+void FField::SetScalarData(const TArray<float>& InData)
 {
     if (FieldType != EFieldType::Scalar)
     {
@@ -114,7 +114,7 @@ void FField::SetScalarData(const TArray<double>& InData)
     DataCount = static_cast<uint32>(InData.Num());
 }
 
-void FField::SetScalarData(TArray<double> &&InData)
+void FField::SetScalarData(TArray<float> &&InData)
 {
     if (FieldType != EFieldType::Scalar)
     {
@@ -125,18 +125,18 @@ void FField::SetScalarData(TArray<double> &&InData)
     DataCount = static_cast<uint32>(Data.Num());
 }
 
-void FField::AddScalar(double Value)
+void FField::AddScalar(float Value)
 {
     Data.Add(Value);
     DataCount = static_cast<uint32>(Data.Num());
 }
 
-double FField::GetScalar(uint32 Index) const
+float FField::GetScalar(uint32 Index) const
 {
     return Data[Index];
 }
 
-void FField::SetScalar(uint32 Index, double Value)
+void FField::SetScalar(uint32 Index, float Value)
 {
     Data[Index] = Value;
 }
@@ -145,7 +145,7 @@ void FField::SetScalar(uint32 Index, double Value)
 // 向量场操作
 // ============================================================================
 
-void FField::SetVectorData(const TArray<double>& InData)
+void FField::SetVectorData(const TArray<float>& InData)
 {
     if (FieldType != EFieldType::Vector)
     {
@@ -162,7 +162,7 @@ void FField::SetVectorData(const TArray<double>& InData)
     DataCount = static_cast<uint32>(InData.Num() / 3);
 }
 
-void FField::SetVectorData(TArray<double>&& InData)
+void FField::SetVectorData(TArray<float>&& InData)
 {
     if (FieldType != EFieldType::Vector)
     {
@@ -179,7 +179,7 @@ void FField::SetVectorData(TArray<double>&& InData)
     DataCount = static_cast<uint32>(Data.Num() / 3);
 }
 
-void FField::AddVector(const FVector3d& Value)
+void FField::AddVector(const FVector& Value)
 {
     Data.Add(Value.X);
     Data.Add(Value.Y);
@@ -187,13 +187,13 @@ void FField::AddVector(const FVector3d& Value)
     DataCount = static_cast<uint32>(Data.Num() / 3);
 }
 
-FVector3d FField::GetVector(uint32 Index) const
+FVector FField::GetVector(uint32 Index) const
 {
     const uint32 Offset = Index * 3;
-    return FVector3d{Data[Offset], Data[Offset + 1], Data[Offset + 2]};
+    return FVector{Data[Offset], Data[Offset + 1], Data[Offset + 2]};
 }
 
-void FField::SetVector(uint32 Index, const FVector3d& Value)
+void FField::SetVector(uint32 Index, const FVector& Value)
 {
     uint32 Offset = Index * 3;
 
@@ -206,7 +206,7 @@ void FField::SetVector(uint32 Index, const FVector3d& Value)
 // 张量场操作
 // ============================================================================
 
-void FField::SetTensorData(const TArray<double>& InData)
+void FField::SetTensorData(const TArray<float>& InData)
 {
     if (FieldType != EFieldType::Tensor)
     {
@@ -223,7 +223,7 @@ void FField::SetTensorData(const TArray<double>& InData)
     DataCount = static_cast<uint32>(InData.Num() / 9);
 }
 
-void FField::SetTensorData(TArray<double>&& InData)
+void FField::SetTensorData(TArray<float>&& InData)
 {
     if (FieldType != EFieldType::Tensor)
     {
@@ -240,7 +240,7 @@ void FField::SetTensorData(TArray<double>&& InData)
     DataCount = static_cast<uint32>(Data.Num() / 9);
 }
 
-void FField::AddTensor(const TArray<double>& Value)
+void FField::AddTensor(const TArray<float>& Value)
 {
     for (uint32 i = 0; i < 9; ++i)
     {
@@ -249,7 +249,7 @@ void FField::AddTensor(const TArray<double>& Value)
     DataCount = static_cast<uint32>(Data.Num() / 9);
 }
 
-void FField::GetTensor(uint32 Index, TArray<double>& OutValue) const
+void FField::GetTensor(uint32 Index, TArray<float>& OutValue) const
 {
     const uint32 Offset = Index * 9;
 
@@ -260,7 +260,7 @@ void FField::GetTensor(uint32 Index, TArray<double>& OutValue) const
     }
 }
 
-void FField::SetTensor(uint32 Index, const TArray<double>& Value)
+void FField::SetTensor(uint32 Index, const TArray<float>& Value)
 {
     const uint32 Offset = Index * 9;
 
@@ -274,7 +274,7 @@ void FField::SetTensor(uint32 Index, const TArray<double>& Value)
 // 通用操作
 // ============================================================================
 
-void FField::SetFieldData(const TArray<double>& InData)
+void FField::SetFieldData(const TArray<float>& InData)
 {
     // 验证数据量必须是 FieldDimension 的倍数
     if (InData.Num() % FieldDimension != 0)
@@ -286,7 +286,7 @@ void FField::SetFieldData(const TArray<double>& InData)
     DataCount = static_cast<uint32>(InData.Num() / FieldDimension);
 }
 
-void FField::SetFieldData(TArray<double>&& InData)
+void FField::SetFieldData(TArray<float>&& InData)
 {
     // 验证数据量必须是 FieldDimension 的倍数
     if (InData.Num() % FieldDimension != 0)
@@ -298,7 +298,7 @@ void FField::SetFieldData(TArray<double>&& InData)
     DataCount = static_cast<uint32>(Data.Num() / FieldDimension);
 }
 
-void FField::AddData(const TArray<double>& Value)
+void FField::AddData(const TArray<float>& Value)
 {
     for (uint32 i = 0; i < FieldDimension; ++i)
     {
@@ -308,7 +308,7 @@ void FField::AddData(const TArray<double>& Value)
     DataCount = static_cast<uint32>(Data.Num() / FieldDimension);
 }
 
-void FField::GetData(uint32 Index, TArray<double>& OutValue) const
+void FField::GetData(uint32 Index, TArray<float>& OutValue) const
 {
     const uint32 Offset = Index * FieldDimension;
 
@@ -319,7 +319,7 @@ void FField::GetData(uint32 Index, TArray<double>& OutValue) const
     }
 }
 
-void FField::SetData(uint32 Index, const TArray<double>& Value)
+void FField::SetData(uint32 Index, const TArray<float>& Value)
 {
     const uint32 Offset = Index * FieldDimension;
 
@@ -329,12 +329,12 @@ void FField::SetData(uint32 Index, const TArray<double>& Value)
     }
 }
 
-TArray<double>& FField::GetFieldData()
+TArray<float>& FField::GetFieldData()
 {
     return Data;
 }
 
-const TArray<double>& FField::GetFieldData() const
+const TArray<float>& FField::GetFieldData() const
 {
     return Data;
 }
