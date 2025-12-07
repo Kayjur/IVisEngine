@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cmath>
-#include <cstdint>
 #include <limits>
+#include "HAL/Platform.h"
 
 /**
  * TVector - 3D 向量类（模板类）
@@ -264,16 +264,18 @@ public:
     // ============================================================================
     
     /** 获取指定索引的分量（0=X, 1=Y, 2=Z） */
-    T& operator[](int32_t Index)
+    T& operator[](int32 Index)
     {
         return XYZ[Index];
     }
     
     /** 获取指定索引的分量（常量版本） */
-    const T& operator[](int32_t Index) const
+    const T& operator[](int32 Index) const
     {
         return XYZ[Index];
     }
+
+    int Zero() const;
 
     // ============================================================================
     // 静态辅助函数

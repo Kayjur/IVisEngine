@@ -249,7 +249,10 @@ public:
     /** 在末尾添加元素 */
     void Add(const T& Item) { Data.push_back(Item); }
     void Add(T&& Item) { Data.push_back(std::move(Item)); }
-    
+
+    template<typename... Args>
+    void Emplace(Args&&... args) { Data.emplace_back(std::forward<Args>(args)...); }
+
     /** 在末尾添加元素（如果不存在） */
     void AddUnique(const T& Item)
     {

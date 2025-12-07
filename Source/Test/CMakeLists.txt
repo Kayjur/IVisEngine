@@ -15,7 +15,8 @@ file(GLOB_RECURSE TEST_SOURCES main.cpp
 add_executable(IVisTest ${TEST_SOURCES}
         Tests/Core/Delegates/TestDelegate.cpp
         Tests/Core/Container/TestCellArray.cpp
-        TestCore/TestTimeUtil.h)
+        TestCore/TestTimeUtil.h
+        Tests/Framework/Mesh/TestMesh.cpp)
 
 # 链接必要的库
 target_link_libraries(IVisTest PRIVATE
