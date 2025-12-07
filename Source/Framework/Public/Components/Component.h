@@ -19,7 +19,7 @@ public:
      * 获取Component的唯一ID
      * @return Component ID
      */
-    uint32 GetComponentId() const { return ComponentId; }
+    [[nodiscard]] uint32 GetComponentId() const { return ComponentId; }
 
 protected:
     uint32 ComponentId;

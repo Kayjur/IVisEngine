@@ -25,7 +25,7 @@ public:
      * 检查渲染状态是否需要更新
      * @return 是否需要更新
      */
-    bool IsRenderStateDirty() const { return bRenderStateDirty; }
+    [[nodiscard]] bool IsRenderStateDirty() const { return bRenderStateDirty; }
 
     /**
      * 清除渲染状态脏标记
@@ -46,7 +46,7 @@ public:
      * 检查Component是否已注册
      * @return 是否已注册
      */
-    bool IsRegistered() const { return bIsRegistered; }
+    [[nodiscard]] bool IsRegistered() const { return bIsRegistered; }
 
 protected:
     bool bRenderStateDirty;

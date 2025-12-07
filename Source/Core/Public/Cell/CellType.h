@@ -28,13 +28,13 @@ class ICellType
 public:
     virtual ~ICellType() = default;
 
-    virtual ECellType GetCellType() const = 0;
+    [[nodiscard]] virtual ECellType GetCellType() const = 0;
 
     // 每种 Cell 的顶点数量
-    virtual int32 GetVertexCount() const = 0;
+    [[nodiscard]] virtual int32 GetVertexCount() const = 0;
 
     // 单元的维度
-    virtual int32 GetCellDimension() const = 0;
+    [[nodiscard]] virtual int32 GetCellDimension() const = 0;
 
     // ============================================================================
     // 静态辅助函数

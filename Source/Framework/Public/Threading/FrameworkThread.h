@@ -19,7 +19,7 @@ public:
     /**
      * 析构函数
      */
-    virtual ~IFrameworkThread() = default;
+    ~IFrameworkThread() override = default;
 
     /**
      * 获取帧数统计
@@ -37,17 +37,17 @@ protected:
     /**
      * 线程主循环
      */
-    virtual void Run() override;
+    void Run() override;
 
     /**
      * 线程初始化
      */
-    virtual void OnThreadStart() override;
+    void OnThreadStart() override;
 
     /**
      * 线程清理
      */
-    virtual void OnThreadEnd() override;
+    void OnThreadEnd() override;
 
 private:
     std::atomic<uint64> FrameCount;
