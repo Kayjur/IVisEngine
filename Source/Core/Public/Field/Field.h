@@ -52,10 +52,10 @@ private:
     TArray<double> Data;
     
     /** 数据数量（节点数或单元数） */
-    uint32 DataCount;
+    uint32 DataCount{};
 
     /** 属性维度 */
-    uint32 FieldDimension;
+    uint32 FieldDimension{};
 
     /** 场类型（标量/向量/张量） */
     EFieldType FieldType;
@@ -64,7 +64,7 @@ private:
     EFieldAttachment Attachment;
 
     /** 是否有效 */
-    bool bIsValid;
+    bool bIsValid{};
 
 public:
     /** 构造函数 */
@@ -163,8 +163,8 @@ public:
     // ============================================================================
 
     /** 设置场数据 */
-    void SetFieldData(const TArray<double>& InData, uint32 InFieldDimension);
-    void SetFieldData(TArray<double>&& InData, uint32 InFieldDimension);
+    void SetFieldData(const TArray<double>& InData);
+    void SetFieldData(TArray<double>&& InData);
 
     /** 添加场数据 */
     void AddData(const TArray<double>& Value);
@@ -181,6 +181,9 @@ public:
 
     /** 清空所有数据 */
     void Clear();
+
+    /** 恢复至原始状态 */
+    void Reset();
 
     /** 预留容量，实际大小与 FieldDimension 相关 */
     void Reserve(uint32 Capacity);

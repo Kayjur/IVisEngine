@@ -26,12 +26,13 @@ void FField::Initialize(const std::string &InFieldName, EFieldType InFieldType, 
     Attachment = InAttachment;
     DataCount = 0;
     bIsValid = true;
-
+    FieldDimension = 1;
     // 根据场类型设置默认维度
     switch (InFieldType)
     {
         case EFieldType::Custom:
             FieldDimension = InFieldDimension;
+            break;
         case EFieldType::Scalar:
             FieldDimension = 1;
             break;
@@ -120,7 +121,7 @@ void FField::SetScalarData(TArray<double> &&InData) noexcept
     }
 
     Data = std::move(InData);
-    DataCount = static_cast<uint32>(InData.Num());
+    DataCount = static_cast<uint32>(Data.Num());
 }
 
 void FField::AddScalar(double Value)
@@ -166,7 +167,7 @@ void FField::SetVectorData(TArray<double>&& InData) noexcept
     {
         return;
     }
-    
+
     // 验证数据量必须是 3 的倍数
     if (Data.Num() % 3 != 0)
     {
@@ -261,7 +262,7 @@ void FField::GetTensor(uint32 Index, TArray<double>& OutValue) const
 void FField::SetTensor(uint32 Index, const TArray<double>& Value)
 {
     const uint32 Offset = Index * 9;
-    
+
     for (uint32 i = 0; i < 9; ++i)
     {
         Data[Offset + i] = Value[i];
@@ -272,40 +273,28 @@ void FField::SetTensor(uint32 Index, const TArray<double>& Value)
 // 通用操作
 // ============================================================================
 
-void FField::SetFieldData(const TArray<double>& InData, uint32 InFieldDimension)
+void FField::SetFieldData(const TArray<double>& InData)
 {
-    if (InFieldDimension == 0)
-    {
-        return;
-    }
-
     // 验证数据量必须是 FieldDimension 的倍数
-    if (InData.Num() % InFieldDimension != 0)
+    if (InData.Num() % FieldDimension != 0)
     {
         return;
     }
 
-    FieldDimension = InFieldDimension;
     Data = InData;
-    DataCount = static_cast<uint32>(InData.Num() / InFieldDimension);
+    DataCount = static_cast<uint32>(InData.Num() / FieldDimension);
 }
 
-void FField::SetFieldData(TArray<double>&& InData, uint32 InFieldDimension)
+void FField::SetFieldData(TArray<double>&& InData)
 {
-    if (InFieldDimension == 0)
-    {
-        return;
-    }
-
     // 验证数据量必须是 FieldDimension 的倍数
-    if (InData.Num() % InFieldDimension != 0)
+    if (InData.Num() % FieldDimension != 0)
     {
         return;
     }
 
-    FieldDimension = InFieldDimension;
     Data = std::move(InData);
-    DataCount = static_cast<uint32>(Data.Num() / InFieldDimension);
+    DataCount = static_cast<uint32>(Data.Num() / FieldDimension);
 }
 
 void FField::AddData(const TArray<double>& Value)
@@ -355,6 +344,16 @@ void FField::Clear()
     DataCount = 0;
 }
 
+void FField::Reset()
+{
+    Clear();
+    FieldName.clear();
+    FieldType = EFieldType::Custom;
+    Attachment = EFieldAttachment::Vertex;
+    FieldDimension = 1;
+    bIsValid = false;
+}
+
 void FField::Reserve(uint32 Capacity)
 {
     if (FieldDimension == 0)
@@ -363,6 +362,7 @@ void FField::Reserve(uint32 Capacity)
     }
     
     Data.Reserve(Capacity * FieldDimension);
+    DataCount = static_cast<uint32>(Data.Num() / FieldDimension);
 }
 
 void FField::Resize(uint32 Size)
@@ -373,4 +373,5 @@ void FField::Resize(uint32 Size)
     }
 
     Data.Resize(Size * FieldDimension);
+    DataCount = static_cast<uint32>(Data.Num() / FieldDimension);
 }

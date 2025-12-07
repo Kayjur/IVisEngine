@@ -47,5 +47,5 @@ TEST(GetCell)
     }
 
     Timer.Stop();
-    Timer.Print();
+    //Timer.Print();
 }

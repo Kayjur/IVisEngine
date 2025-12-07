@@ -1,5 +1,5 @@
 #pragma once
-
+#include <type_traits>
 
 struct FPlatformTypes
 {
