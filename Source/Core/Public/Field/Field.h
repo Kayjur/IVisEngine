@@ -113,7 +113,7 @@ public:
     
     /** 设置标量数据 */
     void SetScalarData(const TArray<double>& InData);
-    void SetScalarData(TArray<double>&& InData) noexcept;
+    void SetScalarData(TArray<double>&& InData);
 
     /** 添加标量值 */
     void AddScalar(double Value);
@@ -130,7 +130,7 @@ public:
     
     /** 设置向量数据 */
     void SetVectorData(const TArray<double>& InData);
-    void SetVectorData(TArray<double>&& InData) noexcept;
+    void SetVectorData(TArray<double>&& InData);
 
     /** 添加向量值 */
     void AddVector(const FVector3d& Value);

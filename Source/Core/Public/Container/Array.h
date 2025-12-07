@@ -67,6 +67,126 @@ public:
     }
 
     // ============================================================================
+    // 算术运算
+    // ============================================================================
+
+    /** 数组加法 */
+    TArray operator+(const TArray& Other) const
+    {
+        if (Num() == Other.Num())
+        {
+            TArray Result(*this);
+            Result += Other;
+            return Result;
+        }
+        return TArray{};
+    }
+
+    /** 数组减法 */
+    TArray operator-(const TArray& Other) const
+    {
+        if (Num() == Other.Num())
+        {
+            TArray Result(*this);
+            Result -= Other;
+            return Result;
+        }
+        return TArray{};
+    }
+
+    /** 数组数乘 */
+    TArray operator*(T Scalar) const
+    {
+        TArray Result(*this);
+        Result *= Scalar;
+        return Result;
+    }
+
+    /** 数组数除 */
+    TArray operator/(T Scalar) const
+    {
+        TArray Result(*this);
+        Result /= Scalar;
+        return Result;
+    }
+
+    /** 数组取反 */
+    TArray operator-() const
+    {
+        TArray Result(*this);
+        for (int32 i = 0; i < Num(); ++i)
+        {
+            Result[i] = -Result[i];
+        }
+        return Result;
+    }
+
+    /** 数组加法赋值 */
+    TArray& operator+=(const TArray& Other)
+    {
+        if (Num() == Other.Num())
+        {
+            for (int32 i = 0; i < Num(); ++i)
+            {
+                At(i) += Other[i];
+            }
+        }
+        return *this;
+    }
+
+    /** 数组减法赋值 */
+    TArray& operator-=(const TArray& Other)
+    {
+        if (Num() == Other.Num())
+        {
+            for (int32 i = 0; i < Num(); ++i)
+            {
+                At(i) -= Other[i];
+            }
+        }
+        return *this;
+    }
+
+    /** 数组数乘赋值 */
+    TArray& operator*=(T Scalar)
+    {
+        for (int32 i = 0; i < Num(); ++i)
+        {
+            At(i) *= Scalar;
+        }
+        return *this;
+    }
+
+    /** 数组数除赋值 */
+    TArray& operator/=(T Scalar)
+    {
+        for (int32 i = 0; i < Num(); ++i)
+        {
+            At(i) /= Scalar;
+        }
+        return *this;
+    }
+
+    /** 数组相等比较 */
+    bool operator==(const TArray& Other) const
+    {
+        for (int32 i = 0; i < Num(); ++i)
+        {
+            if (At(i) != Other.At(i))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** 数组不等比较 */
+    bool operator!=(const TArray& Other) const
+    {
+        return !(*this == Other);
+    }
+
+    // ============================================================================
     // 元素访问
     // ============================================================================
     

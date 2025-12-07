@@ -10,7 +10,7 @@ FCellArray::FCellArray()
     , bEnableMemoryReuse(true)
 {
     // 预分配初始容量
-    Reserve(1024);
+    // Reserve(1024);
 }
 
 FCellArray::FCellArray(uint32 InitialCapacity)

@@ -1,4 +1,5 @@
-#include "../../Public/Field/Field.h"
+#include "Field/Field.h"
+#include "Exception/Exception.h"
 
 // ============================================================================
 // 构造函数
@@ -106,18 +107,18 @@ void FField::SetScalarData(const TArray<double>& InData)
 {
     if (FieldType != EFieldType::Scalar)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "Not a Scalar Data");
     }
 
     Data = InData;
     DataCount = static_cast<uint32>(InData.Num());
 }
 
-void FField::SetScalarData(TArray<double> &&InData) noexcept
+void FField::SetScalarData(TArray<double> &&InData)
 {
     if (FieldType != EFieldType::Scalar)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "Not a Scalar Data");
     }
 
     Data = std::move(InData);
@@ -148,30 +149,30 @@ void FField::SetVectorData(const TArray<double>& InData)
 {
     if (FieldType != EFieldType::Vector)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "Not a Vector Data");
     }
 
     // 验证数据量必须是 3 的倍数
     if (InData.Num() % 3 != 0)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "DataCount must be a multiple of 3");
     }
 
     Data = InData;
     DataCount = static_cast<uint32>(InData.Num() / 3);
 }
 
-void FField::SetVectorData(TArray<double>&& InData) noexcept
+void FField::SetVectorData(TArray<double>&& InData)
 {
     if (FieldType != EFieldType::Vector)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "Not a Vector Data");
     }
 
     // 验证数据量必须是 3 的倍数
     if (Data.Num() % 3 != 0)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "DataCount must be a multiple of 3");
     }
 
     Data = std::move(InData);
@@ -209,13 +210,13 @@ void FField::SetTensorData(const TArray<double>& InData)
 {
     if (FieldType != EFieldType::Tensor)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "Not a Tensor Data");
     }
 
     // 验证数据量必须是 9 的倍数
     if (InData.Num() % 9 != 0)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "DataCount must be a multiple of 9");
     }
 
     Data = InData;
@@ -226,13 +227,13 @@ void FField::SetTensorData(TArray<double>&& InData)
 {
     if (FieldType != EFieldType::Tensor)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "Not a Tensor Data");
     }
 
     // 验证数据量必须是 9 的倍数
     if (InData.Num() % 9 != 0)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "DataCount must be a multiple of 9");
     }
 
     Data = std::move(InData);
@@ -278,7 +279,7 @@ void FField::SetFieldData(const TArray<double>& InData)
     // 验证数据量必须是 FieldDimension 的倍数
     if (InData.Num() % FieldDimension != 0)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "DataCount must be a multiple of FieldDimension");
     }
 
     Data = InData;
@@ -290,7 +291,7 @@ void FField::SetFieldData(TArray<double>&& InData)
     // 验证数据量必须是 FieldDimension 的倍数
     if (InData.Num() % FieldDimension != 0)
     {
-        return;
+        THROW_EXCEPTION(FInvalidOperationException, "DataCount must be a multiple of FieldDimension");
     }
 
     Data = std::move(InData);
