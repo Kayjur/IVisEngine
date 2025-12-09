@@ -13,11 +13,7 @@ file(GLOB_RECURSE FRAMEWORK_SOURCES
 
 # 创建静态库目标
 # STATIC 表示生成静态库（.a 或 .lib 文件）
-add_library(IVisFramework STATIC ${FRAMEWORK_SOURCES}
-        Private/Mesh/MeshBase.cpp
-        Public/Mesh/MeshBase.h
-        Private/Mesh/Mesh.cpp
-        Public/Mesh/Mesh.h)
+add_library(IVisFramework STATIC ${FRAMEWORK_SOURCES})
 
 # 设置公共头文件包含目录
 # PUBLIC 表示使用此库的目标也会自动包含这些目录
