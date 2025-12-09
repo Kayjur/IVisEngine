@@ -2,6 +2,7 @@
 
 #include <map>
 #include <algorithm>
+#include <stdexcept>
 
 /**
  * TMap - 键值对映射容器类
@@ -140,10 +141,10 @@ public:
     
     /** 获取元素数量 */
     SizeType Num() const { return Data.size(); }
-    
-    /** 获取最大容量 */
-    SizeType Max() const { return Data.max_size(); }
-    
+
+    /** 获取元素数量 */
+    SizeType Size() const { return Data.size(); }
+
     /** 检查是否为空 */
     [[nodiscard]] bool IsEmpty() const { return Data.empty(); }
 
@@ -299,4 +300,3 @@ private:
     // 底层使用 std::map 存储数据
     MapType Data;
 };
-

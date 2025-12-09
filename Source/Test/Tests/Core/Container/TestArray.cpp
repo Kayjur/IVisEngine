@@ -8,11 +8,11 @@ TEST(Basic)
 {
     TArray<int> Array;
     ASSERT(Array.IsEmpty() == true);
-    
+    Array.Reserve(10);
     Array.Add(1);
     Array.Add(2);
     Array.Add(3);
-    
+
     ASSERT(Array.Num() == 3);
     ASSERT(Array[0] == 1);
     ASSERT(Array[2] == 3);

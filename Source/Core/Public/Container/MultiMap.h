@@ -151,8 +151,8 @@ public:
     /** 获取元素数量 */
     SizeType Num() const { return Data.size(); }
 
-    /** 获取最大容量 */
-    SizeType Max() const { return Data.max_size(); }
+    /** 获取元素数量 */
+    SizeType Size() const { return Data.size(); }
 
     /** 检查是否为空 */
     [[nodiscard]] bool IsEmpty() const { return Data.empty(); }
