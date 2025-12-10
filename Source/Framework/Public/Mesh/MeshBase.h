@@ -51,13 +51,13 @@ public:
      * @param Index 顶点索引
      * @return 顶点坐标
      */
-    [[nodiscard]] virtual FVector GetVertex(uint32 Index) const = 0;
+    [[nodiscard]] virtual FVector GetVertexPosition(uint32 Index) const = 0;
     
     /**
      * 获取顶点坐标数组的原始指针（用于GPU上传等）
      * @return 顶点坐标数组指针，如果无效返回 nullptr
      */
-    [[nodiscard]] virtual const FVector* GetVerticesPtr() const = 0;
+    [[nodiscard]] virtual const FVector* GetVerticesPositionsPtr() const = 0;
     
     /**
      * 检查顶点索引是否有效

@@ -25,9 +25,9 @@ TEST(Mesh_BasicConstructionAndVertices)
     ASSERT(NamedMesh.GetVertexCount() == 0);
     
     // 测试添加顶点
-    NamedMesh.AddVertex(1.0f, 2.0f, 3.0f);
-    NamedMesh.AddVertex(4.0f, 5.0f, 6.0f);
-    NamedMesh.AddVertex(7.0f, 8.0f, 9.0f);
+    NamedMesh.AddVertexPosition(1.0f, 2.0f, 3.0f);
+    NamedMesh.AddVertexPosition(4.0f, 5.0f, 6.0f);
+    NamedMesh.AddVertexPosition(7.0f, 8.0f, 9.0f);
     
     ASSERT(NamedMesh.GetVertexCount() == 3);
     ASSERT(NamedMesh.IsValidVertexIndex(0));
@@ -35,19 +35,19 @@ TEST(Mesh_BasicConstructionAndVertices)
     ASSERT(!NamedMesh.IsValidVertexIndex(3));
     
     // 测试获取顶点
-    FVector V0 = NamedMesh.GetVertex(0);
+    FVector V0 = NamedMesh.GetVertexPosition(0);
     ASSERT_EQ(V0.X, 1.0f);
     ASSERT_EQ(V0.Y, 2.0f);
     ASSERT_EQ(V0.Z, 3.0f);
     
-    FVector V1 = NamedMesh.GetVertex(1);
+    FVector V1 = NamedMesh.GetVertexPosition(1);
     ASSERT_EQ(V1.X, 4.0f);
     ASSERT_EQ(V1.Y, 5.0f);
     ASSERT_EQ(V1.Z, 6.0f);
     
     // 测试设置顶点
-    NamedMesh.SetVertex(1, 10.0f, 11.0f, 12.0f);
-    V1 = NamedMesh.GetVertex(1);
+    NamedMesh.SetVertexPosition(1, 10.0f, 11.0f, 12.0f);
+    V1 = NamedMesh.GetVertexPosition(1);
     ASSERT_EQ(V1.X, 10.0f);
     ASSERT_EQ(V1.Y, 11.0f);
     ASSERT_EQ(V1.Z, 12.0f);
@@ -56,16 +56,16 @@ TEST(Mesh_BasicConstructionAndVertices)
     TArray<FVector> MoreVertices;
     MoreVertices.Emplace(13.0f, 14.0f, 15.0f);
     MoreVertices.Emplace(16.0f, 17.0f, 18.0f);
-    NamedMesh.AddVertices(MoreVertices);
+    NamedMesh.AddVerticesPositions(MoreVertices);
     
     ASSERT(NamedMesh.GetVertexCount() == 5);
-    FVector V4 = NamedMesh.GetVertex(4);
+    FVector V4 = NamedMesh.GetVertexPosition(4);
     ASSERT_EQ(V4.X, 16.0f);
     ASSERT_EQ(V4.Y, 17.0f);
     ASSERT_EQ(V4.Z, 18.0f);
     
     // 测试无效索引返回零向量
-    FVector InvalidVertex = NamedMesh.GetVertex(100);
+    FVector InvalidVertex = NamedMesh.GetVertexPosition(100);
     ASSERT(InvalidVertex.IsZero());
 }
 
@@ -78,10 +78,10 @@ TEST(Mesh_CellOperations)
     IMesh Mesh("CellTestMesh");
     
     // 添加顶点
-    Mesh.AddVertex(0.0f, 0.0f, 0.0f);
-    Mesh.AddVertex(1.0f, 0.0f, 0.0f);
-    Mesh.AddVertex(0.0f, 1.0f, 0.0f);
-    Mesh.AddVertex(1.0f, 1.0f, 0.0f);
+    Mesh.AddVertexPosition(0.0f, 0.0f, 0.0f);
+    Mesh.AddVertexPosition(1.0f, 0.0f, 0.0f);
+    Mesh.AddVertexPosition(0.0f, 1.0f, 0.0f);
+    Mesh.AddVertexPosition(1.0f, 1.0f, 0.0f);
     
     ASSERT(Mesh.GetVertexCount() == 4);
     
@@ -137,7 +137,7 @@ TEST(Mesh_FieldOperations)
     // 添加顶点
     for (int i = 0; i < 5; ++i)
     {
-        Mesh.AddVertex(static_cast<float>(i), 0.0f, 0.0f);
+        Mesh.AddVertexPosition(static_cast<float>(i), 0.0f, 0.0f);
     }
     
     // 创建顶点场（标量场）
@@ -231,9 +231,9 @@ TEST(Mesh_CopyMoveAndValidation)
     IMesh OriginalMesh("OriginalMesh");
     
     // 添加顶点
-    OriginalMesh.AddVertex(0.0f, 0.0f, 0.0f);
-    OriginalMesh.AddVertex(1.0f, 0.0f, 0.0f);
-    OriginalMesh.AddVertex(0.0f, 1.0f, 0.0f);
+    OriginalMesh.AddVertexPosition(0.0f, 0.0f, 0.0f);
+    OriginalMesh.AddVertexPosition(1.0f, 0.0f, 0.0f);
+    OriginalMesh.AddVertexPosition(0.0f, 1.0f, 0.0f);
     
     // 添加单元
     FCellArray& Cells = OriginalMesh.GetCells();
@@ -264,7 +264,7 @@ TEST(Mesh_CopyMoveAndValidation)
     ASSERT(CopiedMesh.GetMeshName() == "CopiedMesh");
     ASSERT(OriginalMesh.GetMeshName() == "OriginalMesh");
     
-    CopiedMesh.AddVertex(FVector(4.0f, 4.0f, 4.0f));
+    CopiedMesh.AddVertexPosition(FVector(4.0f, 4.0f, 4.0f));
     ASSERT(CopiedMesh.GetVertexCount() == 4);
     ASSERT(OriginalMesh.GetVertexCount() == 3);
     
@@ -305,12 +305,12 @@ TEST(Mesh_CopyMoveAndValidation)
     
     // 测试内存管理
     IMesh MemoryMesh;
-    MemoryMesh.ReserveVertices(100);
+    MemoryMesh.ReserveVerticesPositions(100);
     MemoryMesh.ReserveCells(50);
     
     for (int i = 0; i < 10; ++i)
     {
-        MemoryMesh.AddVertex(static_cast<float>(i), 0.0f, 0.0f);
+        MemoryMesh.AddVertexPosition(static_cast<float>(i), 0.0f, 0.0f);
     }
     
     MemoryMesh.Shrink();

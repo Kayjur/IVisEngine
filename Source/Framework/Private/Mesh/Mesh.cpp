@@ -21,7 +21,7 @@ IMesh::IMesh(const std::string& InMeshName)
 }
 
 IMesh::IMesh(const IMesh& Other)
-    : Vertices(Other.Vertices)
+    : VerticesPositions(Other.VerticesPositions)
     , MeshName(Other.MeshName)
     , bIsValid(Other.bIsValid)
 {
@@ -59,7 +59,7 @@ IMesh::IMesh(const IMesh& Other)
 }
 
 IMesh::IMesh(IMesh&& Other) noexcept
-    : Vertices(std::move(Other.Vertices))
+    : VerticesPositions(std::move(Other.VerticesPositions))
     , Cells(std::move(Other.Cells))
     , VertexFields(std::move(Other.VertexFields))
     , CellFields(std::move(Other.CellFields))
@@ -73,7 +73,7 @@ IMesh& IMesh::operator=(const IMesh& Other)
 {
     if (this != &Other)
     {
-        Vertices = Other.Vertices;
+        VerticesPositions = Other.VerticesPositions;
         MeshName = Other.MeshName;
         bIsValid = Other.bIsValid;
         
@@ -118,7 +118,7 @@ IMesh& IMesh::operator=(IMesh&& Other) noexcept
 {
     if (this != &Other)
     {
-        Vertices = std::move(Other.Vertices);
+        VerticesPositions = std::move(Other.VerticesPositions);
         Cells = std::move(Other.Cells);
         VertexFields = std::move(Other.VertexFields);
         CellFields = std::move(Other.CellFields);
@@ -136,71 +136,71 @@ IMesh& IMesh::operator=(IMesh&& Other) noexcept
 
 uint32 IMesh::GetVertexCount() const
 {
-    return Vertices.Num();
+    return VerticesPositions.Num();
 }
 
-FVector IMesh::GetVertex(uint32 Index) const
+FVector IMesh::GetVertexPosition(uint32 Index) const
 {
     if (IsValidVertexIndex(Index))
     {
-        return Vertices[Index];
+        return VerticesPositions[Index];
     }
     return FVector::ZeroVector();
 }
 
-const FVector* IMesh::GetVerticesPtr() const
+const FVector* IMesh::GetVerticesPositionsPtr() const
 {
-    return Vertices.GetData();
+    return VerticesPositions.GetData();
 }
 
 bool IMesh::IsValidVertexIndex(uint32 Index) const
 {
-    return Index < static_cast<uint32>(Vertices.Num());
+    return Index < static_cast<uint32>(VerticesPositions.Num());
 }
 
 // ============================================================================
 // 几何数据操作（扩展接口）
 // ============================================================================
 
-void IMesh::AddVertex(const FVector& Vertex)
+void IMesh::AddVertexPosition(const FVector& Vertex)
 {
-    Vertices.Add(Vertex);
+    VerticesPositions.Add(Vertex);
 }
 
-void IMesh::AddVertex(float X, float Y, float Z)
+void IMesh::AddVertexPosition(float X, float Y, float Z)
 {
-    Vertices.Emplace(X, Y, Z);
+    VerticesPositions.Emplace(X, Y, Z);
 }
 
-void IMesh::AddVertices(const TArray<FVector>& InVertices)
+void IMesh::AddVerticesPositions(const TArray<FVector>& InVerticesPositions)
 {
-    Vertices.Append(InVertices);
+    VerticesPositions.Append(InVerticesPositions);
 }
 
-void IMesh::AddVertices(TArray<FVector>&& InVertices)
+void IMesh::AddVerticesPositions(TArray<FVector>&& InVerticesPositions)
 {
-    Vertices.Append(std::move(InVertices));
+    VerticesPositions.Append(std::move(InVerticesPositions));
 }
 
-void IMesh::SetVertex(uint32 Index, const FVector& Vertex)
+void IMesh::SetVertexPosition(uint32 Index, const FVector& Vertex)
 {
     if (IsValidVertexIndex(Index))
     {
-        Vertices[Index] = Vertex;
+        VerticesPositions[Index] = Vertex;
     }
 }
 
-void IMesh::SetVertex(uint32 Index, float X, float Y, float Z)
+void IMesh::SetVertexPosition(uint32 Index, float X, float Y, float Z)
 {
     if (IsValidVertexIndex(Index))
     {
-        Vertices[Index] = {X, Y, Z};
+        VerticesPositions[Index] = {X, Y, Z};
     }
 }
 
-const TArray<FVector>& IMesh::GetVertices() const
+const TArray<FVector>& IMesh::GetVerticesPositions() const
 {
-    return Vertices;
+    return VerticesPositions;
 }
 
 // ============================================================================
@@ -572,7 +572,7 @@ bool IMesh::Validate() const
 
 void IMesh::Clear()
 {
-    Vertices.Empty();
+    VerticesPositions.Empty();
     if (Cells)
     {
         Cells->Clear();
@@ -596,9 +596,9 @@ void IMesh::Reset()
 // 内存管理
 // ============================================================================
 
-void IMesh::ReserveVertices(uint32 Capacity)
+void IMesh::ReserveVerticesPositions(uint32 Capacity)
 {
-    Vertices.Reserve(Capacity);
+    VerticesPositions.Reserve(Capacity);
 }
 
 void IMesh::ReserveCells(uint32 Capacity)
@@ -612,7 +612,7 @@ void IMesh::ReserveCells(uint32 Capacity)
 
 void IMesh::Shrink()
 {
-    Vertices.Shrink();
+    VerticesPositions.Shrink();
     if (Cells)
     {
         Cells->Shrink();

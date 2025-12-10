@@ -32,8 +32,8 @@ private:
     // ============================================================================
     
     /** 顶点坐标数组 */
-    TArray<FVector> Vertices;
-    
+    TArray<FVector> VerticesPositions;
+
     // ============================================================================
     // 拓扑数据（使用UniquePtr）
     // ============================================================================
@@ -98,10 +98,10 @@ public:
     [[nodiscard]] uint32 GetVertexCount() const override;
     
     /** 获取指定索引的顶点坐标 */
-    [[nodiscard]] FVector GetVertex(uint32 Index) const override;
+    [[nodiscard]] FVector GetVertexPosition(uint32 Index) const override;
     
     /** 获取顶点坐标数组的原始指针 */
-    [[nodiscard]] const FVector* GetVerticesPtr() const override;
+    [[nodiscard]] const FVector* GetVerticesPositionsPtr() const override;
     
     /** 检查顶点索引是否有效 */
     [[nodiscard]] bool IsValidVertexIndex(uint32 Index) const override;
@@ -114,34 +114,34 @@ public:
      * 添加顶点
      * @param Vertex 顶点坐标
      */
-    void AddVertex(const FVector& Vertex);
-    void AddVertex(float X, float Y, float Z);
+    void AddVertexPosition(const FVector& Vertex);
+    void AddVertexPosition(float X, float Y, float Z);
 
     /**
      * 批量添加顶点
      * @param InVertices 顶点数组
      */
-    void AddVertices(const TArray<FVector>& InVertices);
+    void AddVerticesPositions(const TArray<FVector>& InVertices);
     
     /**
      * 批量添加顶点（移动语义）
      * @param InVertices 顶点数组
      */
-    void AddVertices(TArray<FVector>&& InVertices);
+    void AddVerticesPositions(TArray<FVector>&& InVertices);
     
     /**
      * 设置指定索引的顶点坐标
      * @param Index 顶点索引
      * @param Vertex 顶点坐标
      */
-    void SetVertex(uint32 Index, const FVector& Vertex);
-    void SetVertex(uint32 Index, float X, float Y, float Z);
+    void SetVertexPosition(uint32 Index, const FVector& Vertex);
+    void SetVertexPosition(uint32 Index, float X, float Y, float Z);
 
     /**
      * 获取所有顶点（常量引用）
      * @return 顶点数组常量引用
      */
-    [[nodiscard]] const TArray<FVector>& GetVertices() const;
+    [[nodiscard]] const TArray<FVector>& GetVerticesPositions() const;
     
     // ============================================================================
     // 拓扑数据操作（实现IMeshBase接口）
@@ -298,7 +298,7 @@ public:
      * 预留顶点容量
      * @param Capacity 容量
      */
-    void ReserveVertices(uint32 Capacity);
+    void ReserveVerticesPositions(uint32 Capacity);
 
     /**
      * 预留单元容量
