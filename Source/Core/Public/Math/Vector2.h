@@ -49,6 +49,13 @@ public:
     /** 使用单个值构造（所有分量相同） */
     explicit TVector2(T Value) : X(Value), Y(Value) {}
     
+    /**
+     * 从其他类型的向量构造（隐式转换）
+     * @tparam U 其他数值类型
+     */
+    template<typename U>
+    TVector2(const TVector2<U>& Other) : X(static_cast<T>(Other.X)), Y(static_cast<T>(Other.Y)) {}
+
     /** 拷贝构造函数 */
     TVector2(const TVector2& Other) = default;
     

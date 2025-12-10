@@ -26,6 +26,15 @@ public:
     TUniquePtr() = default;
 
     /**
+     * 从nullptr构造
+     */
+    TUniquePtr(std::nullptr_t)
+        : Ptr(nullptr)
+    {
+    }
+
+
+    /**
      * 从std::unique_ptr构造
      */
     explicit TUniquePtr(std::unique_ptr<T> InPtr)

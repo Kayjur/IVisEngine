@@ -225,6 +225,7 @@ public:
 
     /** 设置容量 */
     void Resize(SizeType Size) { Data.resize(Size); }
+    void Resize(SizeType Size, const T& Value) { Data.resize(Size, Value); }
 
     /** 预留容量 */
     void Reserve(SizeType Capacity) { Data.reserve(Capacity); }

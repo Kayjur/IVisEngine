@@ -5,7 +5,7 @@
 #include "HAL/Platform.h"
 #include <string>
 
-#include "Math/MathType.h"
+#include "Math/Math.h"
 
 /**
  * 场数据绑定位置

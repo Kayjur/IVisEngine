@@ -2,7 +2,7 @@
 
 #include <string>
 #include "HAL/Platform.h"
-
+#include "Math/Math.h"
 
 /**
  * 单元类型枚举

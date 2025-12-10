@@ -53,6 +53,13 @@ public:
     
     /** 使用单个值构造（所有分量相同） */
     explicit TVector4(T Value) : X(Value), Y(Value), Z(Value), W(Value) {}
+
+    /**
+     * 从其他类型的向量构造（隐式转换）
+     * @tparam U 其他数值类型
+     */
+    template<typename U>
+    TVector4(const TVector4<U>& Other) : X(static_cast<T>(Other.X)), Y(static_cast<T>(Other.Y)), Z(static_cast<T>(Other.Z)), W(static_cast<T>(Other.W)) {}
     
     /** 从 3D 向量和 W 分量构造 */
     template<typename U>

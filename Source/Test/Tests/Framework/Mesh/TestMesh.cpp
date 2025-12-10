@@ -2,7 +2,7 @@
 #include "Mesh/Mesh.h"
 #include "Field/Field.h"
 #include "Container/CellArray.h"
-#include "Math/MathType.h"
+#include "Math/Math.h"
 
 TEST_GROUP(TestMesh)
 

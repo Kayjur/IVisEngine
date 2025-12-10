@@ -1,6 +1,6 @@
 #include "TestFramework.h"
 #include "Field/Field.h"
-#include "Math/MathType.h"
+#include "Math/Math.h"
 
 TEST_GROUP(TestField)
 

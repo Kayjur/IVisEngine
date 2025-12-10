@@ -1,5 +1,5 @@
 #include "TestFramework.h"
-#include "Math/MathType.h"
+#include "Math/Math.h"
 
 TEST_GROUP(TestVector)
 
@@ -45,6 +45,22 @@ TEST(TVector_SizeAndNormalize)
     ASSERT_EQ(Normalized.Size(), 1.0f);
 }
 
+// TVector 类型转换测试
+TEST(TVector_Conversion)
+{
+    FVector3d DoubleVec(1.0, 2.0, 3.0);
+    FVector FloatVec = DoubleVec; // 隐式转换
+    
+    ASSERT_EQ(FloatVec.X, 1.0f);
+    ASSERT_EQ(FloatVec.Y, 2.0f);
+    ASSERT_EQ(FloatVec.Z, 3.0f);
+    
+    FVector3d DoubleVec2 = FloatVec; // 隐式转换
+    ASSERT_EQ(DoubleVec2.X, 1.0);
+    ASSERT_EQ(DoubleVec2.Y, 2.0);
+    ASSERT_EQ(DoubleVec2.Z, 3.0);
+}
+
 // TVector2 基本功能测试
 TEST(TVector2_Basic)
 {
@@ -65,6 +81,16 @@ TEST(TVector2_Basic)
     
     float Size = V1.Size();
     ASSERT(Size > 2.2f && Size < 2.3f); // sqrt(1^2 + 2^2) ≈ 2.236
+}
+
+// TVector2 类型转换测试
+TEST(TVector2_Conversion)
+{
+    TVector2<double> DoubleVec(1.0, 2.0);
+    TVector2<float> FloatVec = DoubleVec;
+    
+    ASSERT_EQ(FloatVec.X, 1.0f);
+    ASSERT_EQ(FloatVec.Y, 2.0f);
 }
 
 // TVector4 基本功能测试
@@ -95,3 +121,14 @@ TEST(TVector4_Basic)
     ASSERT(V4FromV3.W == 1.0f);
 }
 
+// TVector4 类型转换测试
+TEST(TVector4_Conversion)
+{
+    TVector4<double> DoubleVec(1.0, 2.0, 3.0, 4.0);
+    TVector4<float> FloatVec = DoubleVec;
+    
+    ASSERT_EQ(FloatVec.X, 1.0f);
+    ASSERT_EQ(FloatVec.Y, 2.0f);
+    ASSERT_EQ(FloatVec.Z, 3.0f);
+    ASSERT_EQ(FloatVec.W, 4.0f);
+}

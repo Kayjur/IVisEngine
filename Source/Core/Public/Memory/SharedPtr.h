@@ -26,6 +26,14 @@ public:
     TSharedPtr() = default;
 
     /**
+     * 从nullptr构造
+     */
+    TSharedPtr(std::nullptr_t)
+        : Ptr(nullptr)
+    {
+    }
+
+    /**
      * 从std::shared_ptr构造
      */
     explicit TSharedPtr(std::shared_ptr<T> InPtr)
@@ -114,6 +122,15 @@ public:
     TSharedPtr& operator=(std::shared_ptr<T> InPtr)
     {
         Ptr = std::move(InPtr);
+        return *this;
+    }
+
+    /**
+     * 从nullptr赋值
+     */
+    TSharedPtr& operator=(std::nullptr_t)
+    {
+        Ptr = nullptr;
         return *this;
     }
 
